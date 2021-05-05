@@ -1,0 +1,256 @@
+import React from "react";
+import {
+  View,
+  FlatList,
+  Modal,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import {
+  DataTable,
+  IconButton,
+  TextInput,
+  Title,
+  Text,
+  ToggleButton,
+  Divider,
+  Searchbar,
+  Avatar,
+  Chip,
+} from "react-native-paper";
+import AppColors from "../configs/AppColors";
+import AppRenderIf from "../configs/AppRenderIf";
+
+const totalPrice = 10000;
+const invoiceItems = [
+  {
+    itemID: "#001",
+    itemName: "Anonymous Item",
+    unitPrice: "250",
+  },
+  {
+    itemID: "#002",
+    itemName: "Anonymous Item",
+    unitPrice: "250",
+  },
+  {
+    itemID: "#003",
+    itemName: "Anonymous Item",
+    unitPrice: "250",
+  },
+  {
+    itemID: "#004",
+    itemName: "Anonymous Item",
+    unitPrice: "250",
+  },
+  {
+    itemID: "#005",
+    itemName: "Anonymous Item",
+    unitPrice: "250",
+  },
+  {
+    itemID: "#006",
+    itemName: "Anonymous Item",
+    unitPrice: "250",
+  },
+  {
+    itemID: "#007",
+    itemName: "Anonymous Item",
+    unitPrice: "250",
+  },
+  {
+    itemID: "#008",
+    itemName: "Anonymous Item",
+    unitPrice: "250",
+  },
+  {
+    itemID: "#009",
+    itemName: "Anonymous Item",
+    unitPrice: "250",
+  },
+  {
+    itemID: "#010",
+    itemName: "Anonymous Item",
+    unitPrice: "250",
+  },
+];
+
+function AppAddReturn(props) {
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [value, setValue] = React.useState("cash");
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const onChangeSearch = (query) => setSearchQuery(query);
+
+  return (
+    <View>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "1%",
+          margin: "1%",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Title style={{ marginLeft: "5%", fontSize: 16 }}>Total: </Title>
+          <Text>Rs.{totalPrice}</Text>
+        </View>
+        <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Title style={{ marginLeft: "5%", fontSize: 16 }}>New Total: </Title>
+          <Text>Rs.{totalPrice}</Text>
+        </View>
+        <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />
+        <IconButton
+          onPress={(values) => props.navigation.navigate("HomeScreen")}
+          icon="arrow-collapse-right"
+          size={24}
+          color={AppColors.primary}
+        ></IconButton>
+      </View>
+      <Divider />
+      <DataTable>
+        <DataTable.Header>
+          <DataTable.Title>Item</DataTable.Title>
+          <DataTable.Title>Unit Price</DataTable.Title>
+          <DataTable.Title>Quantity</DataTable.Title>
+        </DataTable.Header>
+        <DataTable.Row>
+          <DataTable.Cell
+            style={{
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+              onPress={() => setModalVisible(true)}
+            >
+              <IconButton icon="plus" size={15} color={AppColors.primary} />
+              <Text style={{ color: AppColors.primary }}>Add Item</Text>
+            </TouchableOpacity>
+          </DataTable.Cell>
+        </DataTable.Row>
+        <FlatList
+          style={{ marginBottom: "76%" }}
+          data={invoiceItems}
+          keyExtractor={(invoiceItem) => invoiceItem.itemID.toString()}
+          renderItem={({ item }) => (
+            <DataTable.Row>
+              <DataTable.Cell>{item.itemName}</DataTable.Cell>
+              <DataTable.Cell>
+                <TextInput
+                  mode="outlined"
+                  keyboardType="number-pad"
+                  style={{
+                    backgroundColor: AppColors.background,
+                    height: 25,
+                  }}
+                >
+                  {item.unitPrice}
+                </TextInput>
+              </DataTable.Cell>
+              <DataTable.Cell>
+                <TextInput
+                  mode="outlined"
+                  keyboardType="number-pad"
+                  style={{
+                    backgroundColor: AppColors.background,
+                    height: 25,
+                  }}
+                ></TextInput>
+              </DataTable.Cell>
+            </DataTable.Row>
+          )}
+        />
+      </DataTable>
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+        onTouchCancel={() => setModalVisible(false)}
+      >
+        <View>
+          <Searchbar
+            placeholder="Search Items"
+            onChangeText={onChangeSearch}
+            value={searchQuery}
+          />
+          <FlatList
+            style={{ marginBottom: "11%" }}
+            contentContainerStyle={{}}
+            data={invoiceItems}
+            keyExtractor={(invoiceItem) => invoiceItem.itemID.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.card}>
+                <View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Avatar.Icon
+                      size={40}
+                      icon="package-variant"
+                      style={{ marginRight: "2%" }}
+                    />
+                    <Title style={styles.title}>{item.itemName}</Title>
+                    <Chip style={{ marginLeft: "3%" }}>
+                      Rs.{item.unitPrice}
+                    </Chip>
+                  </View>
+                </View>
+                <Divider
+                  style={{ marginLeft: "2%", width: 1, height: "100%" }}
+                />
+                <View>
+                  <IconButton
+                    icon="plus-circle"
+                    color={AppColors.primary}
+                    size={40}
+                    onPress={() => setModalVisible(false)}
+                  />
+                </View>
+              </View>
+            )}
+          />
+        </View>
+      </Modal>
+    </View>
+  );
+}
+
+export default AppAddReturn;
+
+const styles = StyleSheet.create({
+  card: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: "3%",
+    paddingHorizontal: "5%",
+    marginHorizontal: "2%",
+    elevation: 10,
+    backgroundColor: AppColors.background,
+    margin: "1%",
+    borderRadius: 10,
+    flexDirection: "row",
+  },
+  title: { fontSize: 16 },
+});
