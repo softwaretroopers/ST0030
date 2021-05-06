@@ -1,4 +1,4 @@
-# RN-POS
+# Po(S)T Admin
 
 A Mobile Application, developed using React Native, by Software Troopers.
 
