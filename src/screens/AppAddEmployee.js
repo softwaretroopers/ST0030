@@ -33,6 +33,7 @@ function AppAddEmployee(props) {
       .createUserWithEmailAndPassword(email, password)
       .then((response) => {
         const uid = response.user.uid;
+        //const itemID = response.doc.id;
         const data = {
           id: uid,
           email,
@@ -124,12 +125,12 @@ function AppAddEmployee(props) {
             </Button>
             <Portal>
               <Dialog visible={visible} onDismiss={hideDialog}>
-                <Dialog.Title>Alert</Dialog.Title>
+                <Dialog.Title>නිවේදනය</Dialog.Title>
                 <Dialog.Content>
-                  <Paragraph>Successfully Added.</Paragraph>
+                  <Paragraph>සාර්ථකයි</Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
-                  <Button onPress={hideDialog}>Done</Button>
+                  <Button onPress={hideDialog}>හරි</Button>
                 </Dialog.Actions>
               </Dialog>
             </Portal>

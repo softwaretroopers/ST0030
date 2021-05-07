@@ -18,10 +18,10 @@ import AppAddEmployee from "./src/screens/AppAddEmployee";
 
 import AppDrawerContent from "./src/navigation/AppDrawerContent";
 import AppAddStock from "./src/screens/AppAddStock";
-import AppStore from "./src/screens/AppStore";
-import AppAddStore from "./src/screens/AppAddStore";
+import AppReport from "./src/screens/AppReport";
 import AppAddInvoice from "./src/screens/AppAddInvoice";
 import AppAddReturn from "./src/screens/AppAddReturn";
+import AppSelectShop from "./src/screens/AppSelectShop";
 
 const MainStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -29,7 +29,7 @@ const HomeStack = createStackNavigator();
 const InvoiceStack = createStackNavigator();
 const ShopStack = createStackNavigator();
 const StockStack = createStackNavigator();
-const StoreStack = createStackNavigator();
+const ReportStack = createStackNavigator();
 const EmployeeStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 
@@ -99,7 +99,7 @@ const DrawerNav = () => (
     <Drawer.Screen name="HomeScreens" component={HomeScreens} />
     <Drawer.Screen name="StockScreens" component={StockScreens} />
     <Drawer.Screen name="ShopScreens" component={ShopScreens} />
-    <Drawer.Screen name="StoreScreens" component={StoreScreens} />
+    <Drawer.Screen name="ReportScreens" component={ReportScreens} />
     <Drawer.Screen name="EmployeeScreens" component={EmployeeScreens} />
     <Drawer.Screen name="ProfileScreens" component={ProfileScreens} />
   </Drawer.Navigator>
@@ -152,10 +152,18 @@ const AddInvoiceScreens = (props) => (
     }}
   >
     <InvoiceStack.Screen
+      name="SelectShopScreen"
+      component={AppSelectShop}
+      options={{
+        title: "සාප්පුවක් තෝරන්න",
+      }}
+    />
+    <InvoiceStack.Screen
       name="AddInvoiceScreen"
       component={AppAddInvoice}
       options={{
         title: "නව ඉන්වොයිස",
+        headerShown: false,
       }}
     />
     <InvoiceStack.Screen
@@ -163,6 +171,7 @@ const AddInvoiceScreens = (props) => (
       component={AppAddReturn}
       options={{
         title: "Deduct Returns",
+        headerShown: false,
       }}
     />
   </InvoiceStack.Navigator>
@@ -238,8 +247,8 @@ const ShopScreens = (props) => (
   </ShopStack.Navigator>
 );
 
-const StoreScreens = (props) => (
-  <StoreStack.Navigator
+const ReportScreens = (props) => (
+  <ReportStack.Navigator
     screenOptions={{
       headerStyle: { backgroundColor: AppColors.primary },
       headerTintColor: AppColors.background,
@@ -248,11 +257,11 @@ const StoreScreens = (props) => (
       },
     }}
   >
-    <StoreStack.Screen
-      name="StoreScreen"
-      component={AppStore}
+    <ReportStack.Screen
+      name="ReportScreen"
+      component={AppReport}
       options={{
-        title: "ගබඩා",
+        title: "වාර්තා",
         headerLeft: () => (
           <Button
             labelStyle={{ fontSize: 24 }}
@@ -263,14 +272,7 @@ const StoreScreens = (props) => (
         ),
       }}
     />
-    <ShopStack.Screen
-      name="AddStoreScreen"
-      component={AppAddStore}
-      options={{
-        title: "නව ගබඩා",
-      }}
-    />
-  </StoreStack.Navigator>
+  </ReportStack.Navigator>
 );
 
 const EmployeeScreens = (props) => (
@@ -322,7 +324,7 @@ const ProfileScreens = (props) => (
       name="ProfileScreen"
       component={AppProfile}
       options={{
-        title: "Settings",
+        title: "සැකසුම්",
         headerLeft: () => (
           <Button
             labelStyle={{ fontSize: 24 }}

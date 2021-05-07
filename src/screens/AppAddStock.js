@@ -25,6 +25,7 @@ function AppAddStock(props) {
   const hideDialog = () => setVisible(false);
 
   const [itemName, setItemName] = React.useState("");
+  const [stockPrice, setStockPrice] = React.useState("");
   const [unitPriceA, setUnitPriceA] = React.useState("");
   const [unitPriceB, setUnitPriceB] = React.useState("");
   const [unitPriceC, setUnitPriceC] = React.useState("");
@@ -34,14 +35,13 @@ function AppAddStock(props) {
 
   const onAddButtonPress = () => {
     if (itemName && itemName.length > 0) {
-      const key = Date.now();
       const data = {
         itemName: itemName,
+        stockPrice: stockPrice,
         unitPriceA: unitPriceA,
         unitPriceB: unitPriceB,
         unitPriceC: unitPriceC,
         stock: stock,
-        itemID: key,
       };
       stockRef
         .add(data)
@@ -71,6 +71,15 @@ function AppAddStock(props) {
             mode="outlined"
             onChangeText={(text) => setItemName(text)}
             value={itemName}
+          />
+          <TextInput
+            placeholder="තොග මිල"
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+            onChangeText={(text) => setUnitPriceA(text)}
+            value={unitPriceA}
+            keyboardType="number-pad"
           />
           <TextInput
             placeholder="ඒකක මිල - කාණ්ඩය A"
@@ -124,12 +133,12 @@ function AppAddStock(props) {
         </Button>
         <Portal>
           <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title>Alert</Dialog.Title>
+            <Dialog.Title>නිවේදනය</Dialog.Title>
             <Dialog.Content>
-              <Paragraph>Successfully Added.</Paragraph>
+              <Paragraph>සාර්ථකයි</Paragraph>
             </Dialog.Content>
             <Dialog.Actions>
-              <Button onPress={hideDialog}>Done</Button>
+              <Button onPress={hideDialog}>හරි</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

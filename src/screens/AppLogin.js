@@ -87,7 +87,7 @@ function AppLogin(props) {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
             >
-              Login
+              ඇතුල් වන්න
             </Button>
           </ScrollView>
         </View>

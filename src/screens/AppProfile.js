@@ -26,11 +26,9 @@ function AppProfile(props) {
 
   const hideDialog = () => setVisible(false);
   const handlePress = useCallback(async () => {
-    // Open the custom settings if the app has one
     await Linking.openURL("tel:+94717827878");
   }, []);
   const handleEmailPress = useCallback(async () => {
-    // Open the custom settings if the app has one
     await Linking.openURL("mailto: support@expo.io");
   }, []);
   return (
@@ -54,14 +52,14 @@ function AppProfile(props) {
           </Title>
           <View style={{ flexDirection: "row" }}>
             <Chip style={{ margin: "3%" }} icon="phone" onPress={handlePress}>
-              Contact Us
+              දුරකතන අංකය
             </Chip>
             <Chip
               style={{ margin: "3%" }}
               icon="email"
               onPress={handleEmailPress}
             >
-              Email Us
+              විද්‍යුත් තැපෑල
             </Chip>
           </View>
 
@@ -84,16 +82,16 @@ function AppProfile(props) {
                 );
             }}
           >
-            Logout
+            ඉවත් වන්න
           </Button>
           <Portal>
             <Dialog visible={visible} onDismiss={hideDialog}>
-              <Dialog.Title>Alert</Dialog.Title>
+              <Dialog.Title>නිවේදනය</Dialog.Title>
               <Dialog.Content>
-                <Paragraph>Logging Out Successful</Paragraph>
+                <Paragraph>ඉවත් වීම සාර්ථකයි</Paragraph>
               </Dialog.Content>
               <Dialog.Actions>
-                <Button onPress={hideDialog}>Done</Button>
+                <Button onPress={hideDialog}>හරි</Button>
               </Dialog.Actions>
             </Dialog>
           </Portal>

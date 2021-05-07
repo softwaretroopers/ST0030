@@ -29,11 +29,11 @@ function AppAddShop(props) {
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
-      const key = Date.now();
+      //const key = Date.now();
       const data = {
         name: entityText,
         category: value,
-        id: key,
+        //id: key,
       };
       entityRef
         .add(data)
@@ -106,12 +106,12 @@ function AppAddShop(props) {
             </Button>
             <Portal>
               <Dialog visible={visible} onDismiss={hideDialog}>
-                <Dialog.Title>Alert</Dialog.Title>
+                <Dialog.Title>නිවේදනය</Dialog.Title>
                 <Dialog.Content>
-                  <Paragraph>Successfully Added.</Paragraph>
+                  <Paragraph>සාර්ථකයි</Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
-                  <Button onPress={hideDialog}>Done</Button>
+                  <Button onPress={hideDialog}>හරි</Button>
                 </Dialog.Actions>
               </Dialog>
             </Portal>

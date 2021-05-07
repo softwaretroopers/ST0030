@@ -56,10 +56,10 @@ function AppShop(props) {
           keyExtractor={(shop) => shop.id}
           renderItem={({ item }) => (
             <View style={styles.card}>
-              <Avatar.Icon size={40} icon="office-building" />
+              <Avatar.Icon size={40} icon="store" />
               <Title style={styles.title}>{item.name}</Title>
               <Caption>
-                මිල කාණ්ඩය:{" "}
+                මිල කාණ්ඩය:
                 <Caption style={{ textTransform: "uppercase" }}>
                   {item.category}
                 </Caption>

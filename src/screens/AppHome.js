@@ -19,6 +19,7 @@ import {
 } from "react-native-paper";
 
 import AppColors from "../configs/AppColors";
+import AppRenderIf from "../configs/AppRenderIf";
 import { firebase } from "../firebase/Config";
 
 function AppHome(props) {
@@ -124,13 +125,29 @@ function AppHome(props) {
                         source={require("../assets/adaptive-icon.png")}
                         style={{ margin: "2%", backgroundColor: "white" }}
                       />
-                      <Title style={{ fontWeight: "bold" }}>
-                        Software Troopers
-                      </Title>
+                      <View>
+                        <Title
+                          style={{
+                            fontWeight: "bold",
+                            fontSize: 16,
+                          }}
+                        >
+                          Software
+                        </Title>
+                        <Title
+                          style={{
+                            fontWeight: "bold",
+                            fontSize: 16,
+                            color: AppColors.red,
+                          }}
+                        >
+                          Troopers
+                        </Title>
+                      </View>
                     </View>
                     <View>
                       <Caption>ඉන්වොයිසය : {item.invoiceID}</Caption>
-                      <Caption>දිනය : 12/04/2021</Caption>
+                      <Caption>දිනය : {item.date}</Caption>
                       <Caption>සාප්පුව : {item.shopName}</Caption>
                     </View>
                   </View>
@@ -140,9 +157,18 @@ function AppHome(props) {
                       <DataTable.Header>
                         <DataTable.Cell>ගෙවීමේ ක්‍රමය :</DataTable.Cell>
                         <DataTable.Cell numeric>
-                          <Text style={{ textTransform: "capitalize" }}>
-                            {item.payMethod}
-                          </Text>
+                          {AppRenderIf(
+                            "cash" == item.payMethod,
+                            <Text>මුදල්</Text>
+                          )}
+                          {AppRenderIf(
+                            "cheque" == item.payMethod,
+                            <Text>චෙක්පත්</Text>
+                          )}
+                          {AppRenderIf(
+                            "credit" == item.payMethod,
+                            <Text>ණය</Text>
+                          )}
                         </DataTable.Cell>
                       </DataTable.Header>
                     </DataTable>
@@ -180,7 +206,7 @@ function AppHome(props) {
                         marginEnd: "3.5%",
                       }}
                     >
-                      මුළු මුදල : Rs.1,000.00
+                      මුළු මුදල : {item.total}
                     </Title>
                   </ScrollView>
                   <View

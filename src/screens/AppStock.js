@@ -53,7 +53,7 @@ function AppStock(props) {
         />
         <FlatList
           data={StockItems}
-          keyExtractor={(stock) => stock.itemID.toString()}
+          keyExtractor={(stock) => stock.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.card}>
               <View>

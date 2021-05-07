@@ -7,20 +7,11 @@ import {
   Caption,
   Drawer,
   Divider,
-  Dialog,
-  Portal,
-  Paragraph,
   Provider,
-  Button,
 } from "react-native-paper";
-import { firebase } from "../firebase/Config";
+import AppColors from "../configs/AppColors";
 
 function AppDrawerContent(props) {
-  const [visible, setVisible] = React.useState(false);
-
-  const showDialog = () => setVisible(true);
-
-  const hideDialog = () => setVisible(false);
   return (
     <Provider>
       <View style={{ flex: 1 }}>
@@ -33,10 +24,29 @@ function AppDrawerContent(props) {
             >
               <View style={styles.userInfoSection}>
                 <View style={{ flexDirection: "row", marginTop: 15 }}>
-                  <Avatar.Icon size={50} icon="account"></Avatar.Icon>
+                  <Avatar.Image
+                    size={50}
+                    source={require("../assets/adaptive-icon.png")}
+                    style={{ margin: "2%", backgroundColor: "white" }}
+                  />
                   <View style={{ marginLeft: 15, flexDirection: "column" }}>
-                    <Title style={styles.title}>Admin</Title>
-                    <Caption style={styles.caption}>Point Of Sales</Caption>
+                    <Title
+                      style={{ fontSize: 16, marginTop: 3, fontWeight: "bold" }}
+                    >
+                      Software
+                      <Title
+                        style={{
+                          fontSize: 16,
+                          marginTop: 3,
+                          fontWeight: "bold",
+                          color: AppColors.red,
+                        }}
+                      >
+                        {" "}
+                        Troopers
+                      </Title>
+                    </Title>
+                    <Caption style={styles.caption}>Po(S)T Admin</Caption>
                   </View>
                 </View>
               </View>
@@ -59,18 +69,11 @@ function AppDrawerContent(props) {
                 icon="package-variant"
               />
               <Drawer.Item
-                label="ගබඩා"
-                onPress={() => {
-                  props.navigation.navigate("StoreScreens");
-                }}
-                icon="store"
-              />
-              <Drawer.Item
                 label="සාප්පු"
                 onPress={() => {
                   props.navigation.navigate("ShopScreens");
                 }}
-                icon="office-building"
+                icon="store"
               />
               <Drawer.Item
                 label="සේවකයන්"
@@ -79,39 +82,16 @@ function AppDrawerContent(props) {
                 }}
                 icon="account-multiple"
               />
+              <Drawer.Item
+                label="වාර්තා"
+                onPress={() => {
+                  props.navigation.navigate("ReportScreens");
+                }}
+                icon="book-multiple"
+              />
             </Drawer.Section>
           </View>
         </DrawerContentScrollView>
-        <Drawer.Section style={styles.bottomDrawerSection}>
-          <Drawer.Item
-            label="Logout"
-            onPress={() => {
-              firebase
-                .auth()
-                .signOut()
-                .then(
-                  () => {
-                    showDialog();
-                  },
-                  function (error) {
-                    // An error happened.
-                  }
-                );
-            }}
-            icon="logout"
-          />
-        </Drawer.Section>
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title>Alert</Dialog.Title>
-            <Dialog.Content>
-              <Paragraph>Logging Out Successful</Paragraph>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={hideDialog}>Done</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
       </View>
     </Provider>
   );
@@ -123,11 +103,6 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingLeft: 20,
-  },
-  title: {
-    fontSize: 16,
-    marginTop: 3,
-    fontWeight: "bold",
   },
   caption: {
     fontSize: 14,
