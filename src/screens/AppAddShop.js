@@ -39,6 +39,7 @@ function AppAddShop(props) {
         .add(data)
         .then((_doc) => {
           setEntityText("");
+          showDialog();
           props.navigation.goBack();
         })
         .catch((error) => {
@@ -98,7 +99,7 @@ function AppAddShop(props) {
               icon="check-circle"
               style={styles.button}
               onPress={() => {
-                onAddButtonPress(), showDialog();
+                onAddButtonPress();
               }}
               underlineColorAndroid="transparent"
               autoCapitalize="none"
@@ -109,7 +110,7 @@ function AppAddShop(props) {
               <Dialog visible={visible} onDismiss={hideDialog}>
                 <Dialog.Title>නිවේදනය</Dialog.Title>
                 <Dialog.Content>
-                  <Paragraph>සාර්ථකයි</Paragraph>
+                  <Paragraph>දත්ත එකතු කිරීම සාර්ථකයි</Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
                   <Button onPress={hideDialog}>හරි</Button>

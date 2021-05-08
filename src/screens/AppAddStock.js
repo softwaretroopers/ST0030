@@ -47,6 +47,7 @@ function AppAddStock(props) {
         .add(data)
         .then((_doc) => {
           setItemName("");
+          showDialog();
           props.navigation.goBack();
         })
         .catch((error) => {
@@ -71,15 +72,17 @@ function AppAddStock(props) {
             mode="outlined"
             onChangeText={(text) => setItemName(text)}
             value={itemName}
+            left={<TextInput.Icon name="package-variant" />}
           />
           <TextInput
             placeholder="තොග මිල"
             underlineColorAndroid="transparent"
             autoCapitalize="none"
             mode="outlined"
-            onChangeText={(text) => setUnitPriceA(text)}
+            onChangeText={(text) => setStockPrice(text)}
             value={unitPriceA}
             keyboardType="number-pad"
+            left={<TextInput.Icon name="cash" />}
           />
           <TextInput
             placeholder="ඒකක මිල - කාණ්ඩය A"
@@ -89,6 +92,7 @@ function AppAddStock(props) {
             onChangeText={(text) => setUnitPriceA(text)}
             value={unitPriceA}
             keyboardType="number-pad"
+            left={<TextInput.Icon name="alpha-a-box-outline" />}
           />
           <TextInput
             placeholder="ඒකක මිල - කාණ්ඩය B"
@@ -98,6 +102,7 @@ function AppAddStock(props) {
             onChangeText={(text) => setUnitPriceB(text)}
             value={unitPriceB}
             keyboardType="number-pad"
+            left={<TextInput.Icon name="alpha-b-box-outline" />}
           />
           <TextInput
             placeholder="ඒකක මිල - කාණ්ඩය C"
@@ -107,6 +112,7 @@ function AppAddStock(props) {
             onChangeText={(text) => setUnitPriceC(text)}
             value={unitPriceC}
             keyboardType="number-pad"
+            left={<TextInput.Icon name="alpha-c-box-outline" />}
           />
           <TextInput
             placeholder="තොග ප්‍රමාණය"
@@ -116,6 +122,7 @@ function AppAddStock(props) {
             onChangeText={(text) => setStock(text)}
             value={stock}
             keyboardType="number-pad"
+            left={<TextInput.Icon name="numeric-9-plus-box-multiple-outline" />}
           />
         </ScrollView>
 
@@ -126,7 +133,7 @@ function AppAddStock(props) {
           autoCapitalize="none"
           style={styles.button}
           onPress={() => {
-            onAddButtonPress(), showDialog();
+            onAddButtonPress();
           }}
         >
           ඇතුලත් කරන්න
@@ -135,7 +142,7 @@ function AppAddStock(props) {
           <Dialog visible={visible} onDismiss={hideDialog}>
             <Dialog.Title>නිවේදනය</Dialog.Title>
             <Dialog.Content>
-              <Paragraph>සාර්ථකයි</Paragraph>
+              <Paragraph>දත්ත එකතු කිරීම සාර්ථකයි</Paragraph>
             </Dialog.Content>
             <Dialog.Actions>
               <Button onPress={hideDialog}>හරි</Button>

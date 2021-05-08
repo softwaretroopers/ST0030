@@ -16,29 +16,53 @@ import { firebase } from "../configs/Database";
 
 import AppRenderIf from "../configs/AppRenderIf";
 
-function AppEditShop({ navigation, route }) {
+function AppEditStock({ navigation, route }) {
+  const { stockItem } = route.params;
+  const [itemName, setItemName] = React.useState(stockItem.itemName);
+  const [stockPrice, setStockPrice] = React.useState(stockItem.stockPrice);
+  const [unitPriceA, setUnitPriceA] = React.useState(stockItem.unitPriceA);
+  const [unitPriceB, setUnitPriceB] = React.useState(stockItem.unitPriceB);
+  const [unitPriceC, setUnitPriceC] = React.useState(stockItem.unitPriceC);
+  const [stock, setStock] = React.useState(stockItem.stock);
+
   const [visible, setVisible] = React.useState(false);
 
   const showConfirmation = () => setVisible(true);
 
   const hideConfirmation = () => setVisible(false);
 
-  const { shop } = route.params;
-  const [entityText, setEntityText] = useState(shop.name);
-  const [value, setValue] = useState(shop.category);
-
-  const entityRef = firebase.firestore().collection("shops").doc(shop.id);
+  const entityRef = firebase
+    .firestore()
+    .collection("stockItems")
+    .doc(stockItem.id);
 
   const onEditButtonPress = () => {
-    if (entityText && entityText.length > 0 && value && value.length > 0) {
+    if (
+      itemName &&
+      itemName.length > 0 &&
+      stockPrice &&
+      stockPrice.length > 0 &&
+      unitPriceA &&
+      unitPriceA.length > 0 &&
+      unitPriceB &&
+      unitPriceB.length > 0 &&
+      unitPriceC &&
+      unitPriceC.length > 0 &&
+      stock &&
+      stock.length > 0
+    ) {
       const data = {
-        name: entityText,
-        category: value,
+        itemName: itemName,
+        stock: stock,
+        stockPrice: stockPrice,
+        unitPriceA: unitPriceA,
+        unitPriceB: unitPriceB,
+        unitPriceC: unitPriceC,
       };
       entityRef
         .set(data)
         .then((_doc) => {
-          setEntityText("");
+          setItemName("");
           navigation.goBack();
         })
         .catch((error) => {
@@ -50,8 +74,8 @@ function AppEditShop({ navigation, route }) {
   const onDeleteButtonPress = () => {
     firebase
       .firestore()
-      .collection("shops")
-      .doc(shop.id)
+      .collection("stockItems")
+      .doc(stockItem.id)
       .delete()
       .then(
         () => {
@@ -73,50 +97,75 @@ function AppEditShop({ navigation, route }) {
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content
             title="සාප්පු දත්ත වෙනස් කිරීම"
-            subtitle={shop.name}
+            subtitle={stockItem.itemName}
           />
         </Appbar>
         <View style={styles.containers}>
           <TextInput
-            disabled={visibility}
-            label="සාප්පු නම"
-            onChangeText={(text) => setEntityText(text)}
-            value={entityText}
+            label="භාණ්ඩයේ නම"
             underlineColorAndroid="transparent"
             autoCapitalize="none"
             mode="outlined"
-            left={<TextInput.Icon name="store" />}
+            onChangeText={(text) => setItemName(text)}
+            value={itemName}
+            disabled={visibility}
+            left={<TextInput.Icon name="package-variant" />}
           />
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              marginTop: "2%",
-            }}
-          >
-            <Caption style={{ fontSize: 16 }}>මිල කාණ්ඩය </Caption>
-            <ToggleButton.Row
-              onValueChange={(value) => setValue(value)}
-              value={value}
-            >
-              <ToggleButton
-                disabled={visibility}
-                icon="alpha-a"
-                value="a"
-              ></ToggleButton>
-              <ToggleButton
-                disabled={visibility}
-                icon="alpha-b"
-                value="b"
-              ></ToggleButton>
-              <ToggleButton
-                disabled={visibility}
-                icon="alpha-c"
-                value="c"
-              ></ToggleButton>
-            </ToggleButton.Row>
-          </View>
+          <TextInput
+            label="තොග මිල"
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+            onChangeText={(text) => setStockPrice(text)}
+            value={unitPriceA}
+            keyboardType="number-pad"
+            disabled={visibility}
+            left={<TextInput.Icon name="cash" />}
+          />
+          <TextInput
+            label="ඒකක මිල - කාණ්ඩය A"
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+            onChangeText={(text) => setUnitPriceA(text)}
+            value={unitPriceA}
+            keyboardType="number-pad"
+            disabled={visibility}
+            left={<TextInput.Icon name="alpha-a-box-outline" />}
+          />
+          <TextInput
+            label="ඒකක මිල - කාණ්ඩය B"
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+            onChangeText={(text) => setUnitPriceB(text)}
+            value={unitPriceB}
+            keyboardType="number-pad"
+            disabled={visibility}
+            left={<TextInput.Icon name="alpha-b-box-outline" />}
+          />
+          <TextInput
+            label="ඒකක මිල - කාණ්ඩය C"
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+            onChangeText={(text) => setUnitPriceC(text)}
+            value={unitPriceC}
+            keyboardType="number-pad"
+            disabled={visibility}
+            left={<TextInput.Icon name="alpha-c-box-outline" />}
+          />
+          <TextInput
+            label="තොග ප්‍රමාණය"
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+            onChangeText={(text) => setStock(text)}
+            value={stock}
+            keyboardType="number-pad"
+            disabled={visibility}
+            left={<TextInput.Icon name="numeric-9-plus-box-multiple-outline" />}
+          />
           {AppRenderIf(
             visibility,
             <View
@@ -187,7 +236,7 @@ function AppEditShop({ navigation, route }) {
             <Dialog.Title>තහවුරු කිරීම</Dialog.Title>
             <Dialog.Content>
               <Paragraph>
-                {shop.name} සම්බන්ද දත්ත මකාදැමීම තහවුරු කරන්න.
+                {stockItem.itemName} සම්බන්ද දත්ත මකාදැමීම තහවුරු කරන්න.
               </Paragraph>
             </Dialog.Content>
             <Dialog.Actions style={{ justifyContent: "space-evenly" }}>
@@ -247,4 +296,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppEditShop;
+export default AppEditStock;

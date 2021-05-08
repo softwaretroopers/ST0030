@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, StatusBar, FlatList, StyleSheet } from "react-native";
-import {
-  Avatar,
-  Title,
-  Caption,
-  FAB,
-  Provider,
-  IconButton,
-  Portal,
-  Dialog,
-  Paragraph,
-  Button,
-} from "react-native-paper";
+import { Avatar, Title, Caption, FAB, Provider } from "react-native-paper";
 import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
+import AppRenderIf from "../configs/AppRenderIf";
 
 function AppEmployee(props) {
   const [users, setUsers] = useState([]);
@@ -38,11 +28,6 @@ function AppEmployee(props) {
     );
   }, []);
 
-  const [visible, setVisible] = React.useState(false);
-
-  const showConfirmation = () => setVisible(true);
-
-  const hideConfirmation = () => setVisible(false);
   return (
     <Provider>
       <View style={styles.screen}>
@@ -54,24 +39,15 @@ function AppEmployee(props) {
           data={users}
           keyExtractor={(employee) => employee.id.toString()}
           renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Avatar.Icon size={50} icon="account" />
-              <Title style={styles.title}>{item.fullName}</Title>
-              <Caption>{item.email}</Caption>
-              <View style={{ flexDirection: "row" }}>
-                <IconButton
-                  icon="delete"
-                  color={AppColors.red}
-                  size={20}
-                  onPress={showConfirmation}
-                />
-                <IconButton
-                  icon="pen"
-                  color={AppColors.yellow}
-                  size={20}
-                  onPress={() => console.log("Pressed")}
-                />
-              </View>
+            <View>
+              {AppRenderIf(
+                item.fullName != "Admin",
+                <View style={styles.card}>
+                  <Avatar.Icon size={50} icon="account" />
+                  <Title style={styles.title}>{item.fullName}</Title>
+                  <Caption>{item.email}</Caption>
+                </View>
+              )}
             </View>
           )}
         />
@@ -80,38 +56,6 @@ function AppEmployee(props) {
           icon="plus"
           onPress={() => props.navigation.navigate("AddEmployeeScreen")}
         />
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideConfirmation}>
-            <Dialog.Title>Confirmation</Dialog.Title>
-            <Dialog.Content>
-              <Paragraph>
-                Are you sure you want to delete this Employee?
-              </Paragraph>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={hideConfirmation}>No</Button>
-              <Button
-                onPress={() => {
-                  firebase
-                    .firestore()
-                    .collection("users")
-                    .doc(item.id)
-                    .delete()
-                    .then(
-                      () => {
-                        hideConfirmation();
-                      },
-                      function (error) {
-                        // An error happened.
-                      }
-                    );
-                }}
-              >
-                Yes
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
       </View>
     </Provider>
   );

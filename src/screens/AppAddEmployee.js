@@ -38,7 +38,6 @@ function AppAddEmployee(props) {
           id: uid,
           email,
           fullName,
-          createdAt: timestamp,
         };
 
         const usersRef = firebase.firestore().collection("users");
@@ -46,6 +45,7 @@ function AppAddEmployee(props) {
           .doc(uid)
           .set(data)
           .then(() => {
+            showDialog();
             props.navigation.goBack();
           })
           .catch((error) => {
@@ -83,6 +83,7 @@ function AppAddEmployee(props) {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               mode="outlined"
+              left={<TextInput.Icon name="account" />}
             />
             <TextInput
               placeholder="විද්‍යුත් තැපෑල"
@@ -91,6 +92,7 @@ function AppAddEmployee(props) {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               mode="outlined"
+              left={<TextInput.Icon name="email" />}
             />
             <TextInput
               secureTextEntry
@@ -100,6 +102,7 @@ function AppAddEmployee(props) {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               mode="outlined"
+              left={<TextInput.Icon name="lock" />}
             />
             <TextInput
               secureTextEntry
@@ -109,6 +112,7 @@ function AppAddEmployee(props) {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               mode="outlined"
+              left={<TextInput.Icon name="lock-check" />}
             />
 
             <Button
@@ -116,7 +120,7 @@ function AppAddEmployee(props) {
               icon="check-circle"
               style={styles.button}
               onPress={() => {
-                onRegisterPress(), showDialog();
+                onRegisterPress();
               }}
               underlineColorAndroid="transparent"
               autoCapitalize="none"
@@ -127,7 +131,7 @@ function AppAddEmployee(props) {
               <Dialog visible={visible} onDismiss={hideDialog}>
                 <Dialog.Title>නිවේදනය</Dialog.Title>
                 <Dialog.Content>
-                  <Paragraph>සාර්ථකයි</Paragraph>
+                  <Paragraph>දත්ත එකතු කිරීම සාර්ථකයි</Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
                   <Button onPress={hideDialog}>හරි</Button>

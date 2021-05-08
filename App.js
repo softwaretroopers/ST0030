@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+
+import { Button } from "react-native-paper";
+
 import { firebase } from "./src/configs/Database";
 import AppColors from "./src/configs/AppColors";
 
-import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Button } from "react-native-paper";
+import AppDrawerContent from "./src/screens/AppDrawerContent";
 
 import AppLogin from "./src/screens/AppLogin";
 import AppHome from "./src/screens/AppHome";
@@ -13,16 +16,17 @@ import AppShop from "./src/screens/AppShop";
 import AppStock from "./src/screens/AppStock";
 import AppEmployee from "./src/screens/AppEmployee";
 import AppProfile from "./src/screens/AppProfile";
-import AppAddShop from "./src/screens/AppAddShop";
-import AppAddEmployee from "./src/screens/AppAddEmployee";
-
-import AppDrawerContent from "./src/screens/AppDrawerContent";
-import AppAddStock from "./src/screens/AppAddStock";
 import AppReport from "./src/screens/AppReport";
+
+import AppSelectShop from "./src/screens/AppSelectShop";
 import AppAddInvoice from "./src/screens/AppAddInvoice";
 import AppAddReturn from "./src/screens/AppAddReturn";
-import AppSelectShop from "./src/screens/AppSelectShop";
+import AppAddShop from "./src/screens/AppAddShop";
+import AppAddEmployee from "./src/screens/AppAddEmployee";
+import AppAddStock from "./src/screens/AppAddStock";
+
 import AppEditShop from "./src/screens/AppEditShop";
+import AppEditStock from "./src/screens/AppEditStock";
 
 const MainStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -208,6 +212,14 @@ const StockScreens = (props) => (
       component={AppAddStock}
       options={{
         title: "නව භාණ්ඩ",
+      }}
+    />
+    <StockStack.Screen
+      name="EditStockScreen"
+      component={AppEditStock}
+      options={{
+        title: "භාණ්ඩ දත්ත වෙනස් කිරීම",
+        headerShown: false,
       }}
     />
   </StockStack.Navigator>

@@ -1,29 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { View, StatusBar, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  StatusBar,
+  FlatList,
+  StyleSheet,
+  TouchableNativeFeedback,
+} from "react-native";
 import {
   Avatar,
   Title,
   FAB,
   Chip,
-  IconButton,
-  Divider,
-  Dialog,
-  Portal,
-  Paragraph,
-  Button,
   Provider,
+  Caption,
 } from "react-native-paper";
 import { firebase } from "../configs/Database";
 import AppColors from "../configs/AppColors";
 import AppRenderIf from "../configs/AppRenderIf";
 
 function AppStock(props) {
-  const [visible, setVisible] = React.useState(false);
-
-  const showConfirmation = () => setVisible(true);
-
-  const hideConfirmation = () => setVisible(false);
-
   const [StockItems, setStockItems] = useState([]);
 
   const stockRef = firebase.firestore().collection("stockItems");
@@ -56,81 +51,107 @@ function AppStock(props) {
           data={StockItems}
           keyExtractor={(stock) => stock.id.toString()}
           renderItem={({ item }) => (
-            <View style={styles.card}>
-              <View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Avatar.Icon
-                    size={40}
-                    icon="package-variant"
-                    style={{ marginRight: "2%" }}
-                  />
-                  <Title style={styles.title}>{item.itemName}</Title>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  {AppRenderIf(
-                    0 == item.stock,
-                    <Chip
-                      selectedColor={AppColors.red}
-                      style={{ margin: 10 }}
-                      icon="circle"
-                    >
-                      Unavailable
+            <TouchableNativeFeedback
+              onPress={(values) =>
+                props.navigation.navigate("EditStockScreen", {
+                  stockItem: {
+                    id: item.id,
+                    itemName: item.itemName,
+                    stock: item.stock,
+                    stockPrice: item.stockPrice,
+                    unitPriceA: item.unitPriceA,
+                    unitPriceB: item.unitPriceB,
+                    unitPriceC: item.unitPriceC,
+                  },
+                })
+              }
+            >
+              <View style={styles.card}>
+                <View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Avatar.Icon
+                      size={40}
+                      icon="package-variant"
+                      style={{ marginRight: "2%" }}
+                    />
+                    <Title style={styles.title}>{item.itemName}</Title>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                      alignItems: "center",
+                      marginVertical: "5%",
+                    }}
+                  >
+                    {AppRenderIf(
+                      0 == item.stock,
+                      <Chip
+                        selectedColor={AppColors.red}
+                        style={{ marginRight: "3%" }}
+                        icon="circle"
+                      >
+                        Unavailable
+                      </Chip>
+                    )}
+                    {AppRenderIf(
+                      0 < item.stock,
+                      <Chip
+                        selectedColor={AppColors.green}
+                        style={{ marginRight: "3%" }}
+                        icon="circle"
+                      >
+                        Available
+                      </Chip>
+                    )}
+                    {AppRenderIf(
+                      10 < item.stock,
+                      <Chip style={{ marginRight: "3%" }}>
+                        තොගය: {item.stock}
+                      </Chip>
+                    )}
+                    {AppRenderIf(
+                      10 >= item.stock,
+                      <Chip
+                        selectedColor={AppColors.orange}
+                        style={{ marginRight: "3%" }}
+                      >
+                        තොගය: {item.stock} (Low)
+                      </Chip>
+                    )}
+                    <Chip>
+                      <Caption style={{ fontSize: 8 }}>තොග මිල </Caption>Rs.
+                      {item.stockPrice}
                     </Chip>
-                  )}
-                  {AppRenderIf(
-                    0 < item.stock,
-                    <Chip
-                      selectedColor={AppColors.green}
-                      style={{ margin: 10 }}
-                      icon="circle"
-                    >
-                      Available
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <Chip>
+                      <Caption style={{ fontSize: 8 }}>A කාණ්ඩය</Caption> Rs.
+                      {item.unitPriceA}
                     </Chip>
-                  )}
-                  {AppRenderIf(
-                    10 < item.stock,
-                    <Chip style={{ marginRight: "3%" }}>Qty: {item.stock}</Chip>
-                  )}
-                  {AppRenderIf(
-                    10 >= item.stock,
-                    <Chip
-                      selectedColor={AppColors.orange}
-                      style={{ marginRight: "3%" }}
-                    >
-                      තොගය: {item.stock} (Low)
+                    <Chip>
+                      <Caption style={{ fontSize: 8 }}>B කාණ්ඩය</Caption> Rs.
+                      {item.unitPriceB}
                     </Chip>
-                  )}
-                  <Chip style={{ marginLeft: "3%" }}>Rs.{item.unitPriceA}</Chip>
+                    <Chip>
+                      <Caption style={{ fontSize: 8 }}>C කාණ්ඩය</Caption> Rs.
+                      {item.unitPriceC}
+                    </Chip>
+                  </View>
                 </View>
               </View>
-              <Divider style={{ marginLeft: "2%", width: 1, height: "100%" }} />
-              <View>
-                <IconButton
-                  icon="delete"
-                  color={AppColors.red}
-                  size={20}
-                  onPress={showConfirmation}
-                />
-                <IconButton
-                  icon="pen"
-                  color={AppColors.yellow}
-                  size={20}
-                  onPress={() => console.log("Pressed")}
-                />
-              </View>
-            </View>
+            </TouchableNativeFeedback>
           )}
         />
         <FAB
@@ -138,36 +159,6 @@ function AppStock(props) {
           icon="plus"
           onPress={() => props.navigation.navigate("AddStockScreen")}
         />
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideConfirmation}>
-            <Dialog.Title>Confirmation</Dialog.Title>
-            <Dialog.Content>
-              <Paragraph>Are you sure you want to delete this item?</Paragraph>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={hideConfirmation}>No</Button>
-              <Button
-                onPress={() => {
-                  firebase
-                    .firestore()
-                    .collection("stockItems")
-                    .doc(item.id)
-                    .delete()
-                    .then(
-                      () => {
-                        hideConfirmation();
-                      },
-                      function (error) {
-                        // An error happened.
-                      }
-                    );
-                }}
-              >
-                Yes
-              </Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
       </View>
     </Provider>
   );

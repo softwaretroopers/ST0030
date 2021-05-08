@@ -6,29 +6,12 @@ import {
   StyleSheet,
   TouchableNativeFeedback,
 } from "react-native";
-import {
-  Avatar,
-  Title,
-  Caption,
-  FAB,
-  Provider,
-  IconButton,
-  Portal,
-  Dialog,
-  Paragraph,
-  Button,
-} from "react-native-paper";
+import { Avatar, Title, Caption, FAB, Provider } from "react-native-paper";
 import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 
 function AppShop(props) {
-  const [visible, setVisible] = React.useState(false);
-
-  const showConfirmation = () => setVisible(true);
-
-  const hideConfirmation = () => setVisible(false);
-
   const [shops, setShops] = useState([]);
 
   const shopRef = firebase.firestore().collection("shops");
