@@ -9,7 +9,7 @@ import {
   TouchableNativeFeedback,
 } from "react-native";
 import { Title, Caption, Avatar } from "react-native-paper";
-import { firebase } from "../firebase/Config";
+import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 

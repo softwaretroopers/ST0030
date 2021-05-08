@@ -16,7 +16,7 @@ import {
   Button,
   Chip,
 } from "react-native-paper";
-import { firebase } from "../firebase/Config";
+import { firebase } from "../configs/Database";
 import AppColors from "../configs/AppColors";
 
 function AppProfile(props) {

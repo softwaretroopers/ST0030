@@ -12,7 +12,7 @@ import {
 } from "react-native-paper";
 import AppColors from "../configs/AppColors";
 import AppRenderIf from "../configs/AppRenderIf";
-import { firebase } from "../firebase/Config";
+import { firebase } from "../configs/Database";
 
 const totalPrice = 10000;
 

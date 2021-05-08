@@ -12,7 +12,7 @@ import {
   Paragraph,
   Button,
 } from "react-native-paper";
-import { firebase } from "../firebase/Config";
+import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 
@@ -90,7 +90,25 @@ function AppEmployee(props) {
             </Dialog.Content>
             <Dialog.Actions>
               <Button onPress={hideConfirmation}>No</Button>
-              <Button onPress={hideConfirmation}>Yes</Button>
+              <Button
+                onPress={() => {
+                  firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(item.id)
+                    .delete()
+                    .then(
+                      () => {
+                        hideConfirmation();
+                      },
+                      function (error) {
+                        // An error happened.
+                      }
+                    );
+                }}
+              >
+                Yes
+              </Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

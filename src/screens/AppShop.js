@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StatusBar, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  StatusBar,
+  FlatList,
+  StyleSheet,
+  TouchableNativeFeedback,
+} from "react-native";
 import {
   Avatar,
   Title,
@@ -12,7 +18,7 @@ import {
   Paragraph,
   Button,
 } from "react-native-paper";
-import { firebase } from "../firebase/Config";
+import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 
@@ -55,30 +61,28 @@ function AppShop(props) {
           data={shops}
           keyExtractor={(shop) => shop.id}
           renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Avatar.Icon size={40} icon="store" />
-              <Title style={styles.title}>{item.name}</Title>
-              <Caption>
-                මිල කාණ්ඩය:
-                <Caption style={{ textTransform: "uppercase" }}>
-                  {item.category}
+            <TouchableNativeFeedback
+              onPress={(values) =>
+                props.navigation.navigate("EditShopScreen", {
+                  shop: {
+                    id: item.id,
+                    name: item.name,
+                    category: item.category,
+                  },
+                })
+              }
+            >
+              <View style={styles.card}>
+                <Avatar.Icon size={40} icon="store" />
+                <Title style={styles.title}>{item.name}</Title>
+                <Caption>
+                  මිල කාණ්ඩය:
+                  <Caption style={{ textTransform: "uppercase" }}>
+                    {item.category}
+                  </Caption>
                 </Caption>
-              </Caption>
-              <View style={{ flexDirection: "row" }}>
-                <IconButton
-                  icon="delete"
-                  color={AppColors.red}
-                  size={20}
-                  onPress={showConfirmation}
-                />
-                <IconButton
-                  icon="pen"
-                  color={AppColors.yellow}
-                  size={20}
-                  onPress={() => console.log("Pressed")}
-                />
               </View>
-            </View>
+            </TouchableNativeFeedback>
           )}
         />
         <FAB
@@ -86,18 +90,6 @@ function AppShop(props) {
           icon="plus"
           onPress={() => props.navigation.navigate("AddShopScreen")}
         />
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideConfirmation}>
-            <Dialog.Title>Confirmation</Dialog.Title>
-            <Dialog.Content>
-              <Paragraph>Are you sure you want to delete this Shop?</Paragraph>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={hideConfirmation}>No</Button>
-              <Button onPress={hideConfirmation}>Yes</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
       </View>
     </Provider>
   );

@@ -10,7 +10,7 @@ import {
   Paragraph,
   Provider,
 } from "react-native-paper";
-import { firebase } from "../firebase/Config";
+import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 
@@ -21,7 +21,7 @@ function AppAddShop(props) {
 
   const hideDialog = () => setVisible(false);
 
-  const [value, setValue] = useState("a");
+  const [value, setValue] = useState("");
 
   const [entityText, setEntityText] = useState("");
 
@@ -73,6 +73,7 @@ function AppAddShop(props) {
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               mode="outlined"
+              left={<TextInput.Icon name="store" />}
             />
 
             <View
