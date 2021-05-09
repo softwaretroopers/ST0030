@@ -3,8 +3,8 @@ import {
   View,
   StyleSheet,
   StatusBar,
-  TouchableHighlight,
   Linking,
+  BackHandler,
 } from "react-native";
 import {
   Avatar,
@@ -20,6 +20,8 @@ import { firebase } from "../configs/Database";
 import AppColors from "../configs/AppColors";
 
 function AppProfile(props) {
+  const closeApp = () => BackHandler.exitApp();
+
   const [visible, setVisible] = React.useState(false);
 
   const showDialog = () => setVisible(true);
@@ -91,7 +93,7 @@ function AppProfile(props) {
                 <Paragraph>ඉවත් වීම සාර්ථකයි</Paragraph>
               </Dialog.Content>
               <Dialog.Actions>
-                <Button onPress={hideDialog}>හරි</Button>
+                <Button onPress={(hideDialog, closeApp)}>හරි</Button>
               </Dialog.Actions>
             </Dialog>
           </Portal>
