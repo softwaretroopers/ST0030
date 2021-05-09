@@ -66,90 +66,207 @@ function AppStock(props) {
                 })
               }
             >
-              <View style={styles.card}>
-                <View>
+              <View>
+                {AppRenderIf(
+                  item.stock == 0,
                   <View
                     style={{
-                      flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
+                      paddingVertical: "3%",
+                      paddingHorizontal: "5%",
+                      marginHorizontal: "2%",
+                      backgroundColor: AppColors.background,
+                      margin: "1%",
+                      borderRadius: 10,
+                      flexDirection: "row",
+
+                      borderColor: AppColors.red,
+                      borderStyle: "solid",
+                      borderWidth: 2,
                     }}
                   >
-                    <Avatar.Icon
-                      size={40}
-                      icon="package-variant"
-                      style={{ marginRight: "2%" }}
-                    />
-                    <Title style={styles.title}>{item.itemName}</Title>
+                    <View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Avatar.Icon
+                          size={40}
+                          icon="package-variant"
+                          style={{ marginRight: "2%" }}
+                        />
+                        <Title style={styles.title}>{item.itemName}</Title>
+                        <Avatar.Icon
+                          style={{ backgroundColor: AppColors.background }}
+                          size={40}
+                          icon="close-circle"
+                          color={AppColors.red}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginVertical: "5%",
+                        }}
+                      >
+                        {AppRenderIf(
+                          10 < item.stock,
+                          <Chip style={{ marginRight: "3%" }}>
+                            <Caption style={{ fontSize: 8 }}>තොගය: </Caption>
+                            {item.stock}
+                          </Chip>
+                        )}
+                        {AppRenderIf(
+                          10 >= item.stock,
+                          <Chip
+                            selectedColor={AppColors.orange}
+                            style={{ marginRight: "3%" }}
+                          >
+                            <Caption
+                              style={{ fontSize: 8, color: AppColors.orange }}
+                            >
+                              තොගය:{" "}
+                            </Caption>
+                            {item.stock} (Low)
+                          </Chip>
+                        )}
+                        <Chip>
+                          <Caption style={{ fontSize: 8 }}>තොග මිල </Caption>Rs.
+                          {item.stockPrice}
+                        </Chip>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-evenly",
+                        }}
+                      >
+                        <Chip>
+                          <Caption style={{ fontSize: 8 }}>A කාණ්ඩය</Caption>{" "}
+                          Rs.
+                          {item.unitPriceA}
+                        </Chip>
+                        <Chip>
+                          <Caption style={{ fontSize: 8 }}>B කාණ්ඩය</Caption>{" "}
+                          Rs.
+                          {item.unitPriceB}
+                        </Chip>
+                        <Chip>
+                          <Caption style={{ fontSize: 8 }}>C කාණ්ඩය</Caption>{" "}
+                          Rs.
+                          {item.unitPriceC}
+                        </Chip>
+                      </View>
+                    </View>
                   </View>
+                )}
+
+                {AppRenderIf(
+                  item.stock > 0,
                   <View
                     style={{
-                      flexDirection: "row",
-                      justifyContent: "space-evenly",
+                      justifyContent: "center",
                       alignItems: "center",
-                      marginVertical: "5%",
-                    }}
-                  >
-                    {AppRenderIf(
-                      0 == item.stock,
-                      <Chip
-                        selectedColor={AppColors.red}
-                        style={{ marginRight: "3%" }}
-                        icon="circle"
-                      >
-                        Unavailable
-                      </Chip>
-                    )}
-                    {AppRenderIf(
-                      0 < item.stock,
-                      <Chip
-                        selectedColor={AppColors.green}
-                        style={{ marginRight: "3%" }}
-                        icon="circle"
-                      >
-                        Available
-                      </Chip>
-                    )}
-                    {AppRenderIf(
-                      10 < item.stock,
-                      <Chip style={{ marginRight: "3%" }}>
-                        තොගය: {item.stock}
-                      </Chip>
-                    )}
-                    {AppRenderIf(
-                      10 >= item.stock,
-                      <Chip
-                        selectedColor={AppColors.orange}
-                        style={{ marginRight: "3%" }}
-                      >
-                        තොගය: {item.stock} (Low)
-                      </Chip>
-                    )}
-                    <Chip>
-                      <Caption style={{ fontSize: 8 }}>තොග මිල </Caption>Rs.
-                      {item.stockPrice}
-                    </Chip>
-                  </View>
-                  <View
-                    style={{
+                      paddingVertical: "3%",
+                      paddingHorizontal: "5%",
+                      marginHorizontal: "2%",
+                      backgroundColor: AppColors.background,
+                      margin: "1%",
+                      borderRadius: 10,
                       flexDirection: "row",
-                      justifyContent: "space-evenly",
+
+                      borderColor: AppColors.secondaryVariant,
+                      borderStyle: "solid",
+                      borderWidth: 2,
                     }}
                   >
-                    <Chip>
-                      <Caption style={{ fontSize: 8 }}>A කාණ්ඩය</Caption> Rs.
-                      {item.unitPriceA}
-                    </Chip>
-                    <Chip>
-                      <Caption style={{ fontSize: 8 }}>B කාණ්ඩය</Caption> Rs.
-                      {item.unitPriceB}
-                    </Chip>
-                    <Chip>
-                      <Caption style={{ fontSize: 8 }}>C කාණ්ඩය</Caption> Rs.
-                      {item.unitPriceC}
-                    </Chip>
+                    <View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Avatar.Icon
+                          size={40}
+                          icon="package-variant"
+                          style={{ marginRight: "2%" }}
+                        />
+                        <Title style={styles.title}>{item.itemName}</Title>
+
+                        <Avatar.Icon
+                          style={{ backgroundColor: AppColors.background }}
+                          size={40}
+                          icon="check-circle"
+                          color={AppColors.secondaryVariant}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginVertical: "5%",
+                        }}
+                      >
+                        {AppRenderIf(
+                          10 < item.stock,
+                          <Chip style={{ marginRight: "3%" }}>
+                            <Caption style={{ fontSize: 8 }}>තොගය: </Caption>
+                            {item.stock}
+                          </Chip>
+                        )}
+                        {AppRenderIf(
+                          10 >= item.stock,
+                          <Chip
+                            selectedColor={AppColors.orange}
+                            style={{ marginRight: "3%" }}
+                          >
+                            <Caption
+                              style={{ fontSize: 8, color: AppColors.orange }}
+                            >
+                              තොගය:{" "}
+                            </Caption>
+                            {item.stock} (Low)
+                          </Chip>
+                        )}
+                        <Chip>
+                          <Caption style={{ fontSize: 8 }}>තොග මිල </Caption>Rs.
+                          {item.stockPrice}
+                        </Chip>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-evenly",
+                        }}
+                      >
+                        <Chip>
+                          <Caption style={{ fontSize: 8 }}>A කාණ්ඩය</Caption>{" "}
+                          Rs.
+                          {item.unitPriceA}
+                        </Chip>
+                        <Chip>
+                          <Caption style={{ fontSize: 8 }}>B කාණ්ඩය</Caption>{" "}
+                          Rs.
+                          {item.unitPriceB}
+                        </Chip>
+                        <Chip>
+                          <Caption style={{ fontSize: 8 }}>C කාණ්ඩය</Caption>{" "}
+                          Rs.
+                          {item.unitPriceC}
+                        </Chip>
+                      </View>
+                    </View>
                   </View>
-                </View>
+                )}
               </View>
             </TouchableNativeFeedback>
           )}
@@ -167,18 +284,6 @@ function AppStock(props) {
 export default AppStock;
 
 const styles = StyleSheet.create({
-  card: {
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: "3%",
-    paddingHorizontal: "5%",
-    marginHorizontal: "2%",
-    elevation: 10,
-    backgroundColor: AppColors.background,
-    margin: "1%",
-    borderRadius: 10,
-    flexDirection: "row",
-  },
   title: { fontSize: 16 },
   screen: { flex: 1 },
   fab: {

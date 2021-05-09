@@ -3,8 +3,6 @@ import { View, StyleSheet } from "react-native";
 import {
   Appbar,
   TextInput,
-  ToggleButton,
-  Caption,
   Button,
   Portal,
   Dialog,
@@ -96,7 +94,7 @@ function AppEditStock({ navigation, route }) {
         <Appbar style={{ backgroundColor: AppColors.primary }}>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content
-            title="සාප්පු දත්ත වෙනස් කිරීම"
+            title="භාණ්ඩ දත්ත වෙනස් කිරීම"
             subtitle={stockItem.itemName}
           />
         </Appbar>
@@ -117,7 +115,7 @@ function AppEditStock({ navigation, route }) {
             autoCapitalize="none"
             mode="outlined"
             onChangeText={(text) => setStockPrice(text)}
-            value={unitPriceA}
+            value={stockPrice}
             keyboardType="number-pad"
             disabled={visibility}
             left={<TextInput.Icon name="cash" />}
