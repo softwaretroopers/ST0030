@@ -3,7 +3,7 @@
     "name": "Po(S)T Admin",
     "slug": "Post-admin",
     "owner": "softwaretroopers",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

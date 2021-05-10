@@ -9,12 +9,19 @@ import {
   Portal,
   Paragraph,
   Provider,
+  Snackbar,
 } from "react-native-paper";
 import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 
 function AppAddShop(props) {
+  const [visibleSnack, setVisibleSnack] = React.useState(false);
+
+  const onToggleSnackBar = () => setVisibleSnack(!visibleSnack);
+
+  const onDismissSnackBar = () => setVisibleSnack(false);
+
   const [visible, setVisible] = React.useState(false);
 
   const showDialog = () => setVisible(true);
@@ -39,7 +46,6 @@ function AppAddShop(props) {
         .add(data)
         .then((_doc) => {
           setEntityText("");
-          showDialog();
           props.navigation.goBack();
         })
         .catch((error) => {
@@ -98,9 +104,7 @@ function AppAddShop(props) {
               mode="contained"
               icon="check-circle"
               style={styles.button}
-              onPress={() => {
-                onAddButtonPress();
-              }}
+              onPress={showDialog}
               underlineColorAndroid="transparent"
               autoCapitalize="none"
             >
@@ -110,13 +114,43 @@ function AppAddShop(props) {
               <Dialog visible={visible} onDismiss={hideDialog}>
                 <Dialog.Title>නිවේදනය</Dialog.Title>
                 <Dialog.Content>
-                  <Paragraph>දත්ත එකතු කිරීම සාර්ථකයි</Paragraph>
+                  <Paragraph>දත්ත එකතු කිරීම තහවුරු කරන්න</Paragraph>
                 </Dialog.Content>
-                <Dialog.Actions>
-                  <Button onPress={hideDialog}>හරි</Button>
+                <Dialog.Actions style={{ justifyContent: "space-evenly" }}>
+                  <Button
+                    mode="contained"
+                    color={AppColors.red}
+                    onPress={hideDialog}
+                  >
+                    අවලංගු කරන්න
+                  </Button>
+                  <Button
+                    mode="contained"
+                    color={AppColors.secondaryVariant}
+                    onPress={() => {
+                      hideDialog();
+                      onToggleSnackBar();
+                      onAddButtonPress();
+                    }}
+                  >
+                    තහවුරු කරන්න
+                  </Button>
                 </Dialog.Actions>
               </Dialog>
             </Portal>
+            <Snackbar
+              visible={visibleSnack}
+              onDismiss={onDismissSnackBar}
+              action={{
+                label: "හරි",
+                onPress: () => {
+                  onDismissSnackBar();
+                  props.navigation.goBack();
+                },
+              }}
+            >
+              දත්ත එකතු කිරීම සාර්ථකයි
+            </Snackbar>
           </View>
         </View>
       </View>
