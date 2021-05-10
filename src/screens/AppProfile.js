@@ -87,7 +87,7 @@ function AppProfile(props) {
             ඉවත් වන්න
           </Button>
           <Portal>
-            <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog visible={visible} onDismiss={closeApp}>
               <Dialog.Title>නිවේදනය</Dialog.Title>
               <Dialog.Content>
                 <Paragraph>ඉවත් වීම සාර්ථකයි</Paragraph>
