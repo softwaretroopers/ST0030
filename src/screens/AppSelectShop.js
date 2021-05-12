@@ -8,13 +8,28 @@ import {
   FlatList,
   TouchableNativeFeedback,
 } from "react-native";
-import { Title, Caption, Avatar } from "react-native-paper";
+import {
+  Title,
+  Caption,
+  Avatar,
+  Provider,
+  Dialog,
+  Portal,
+  Paragraph,
+  Button,
+} from "react-native-paper";
 import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 
 function AppSelectShop(props) {
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
   const [shops, setShops] = useState([]);
+  const invoiceId = Date.now().toString();
 
   const shopRef = firebase.firestore().collection("shops");
 
@@ -34,49 +49,74 @@ function AppSelectShop(props) {
       }
     );
   }, []);
+
+  //create invoice
+  const dbRef = firebase.firestore();
+
+  const createInvoice = () => {
+    {
+      const data = {
+        invoiceID: invoiceId,
+      };
+      dbRef
+        .collection("invoices")
+        .doc(invoiceId)
+        .set(data)
+        .catch((error) => {
+          alert(error);
+        });
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor={AppColors.primary} barStyle="light-content" />
-      <View style={styles.header}>
-        <Text style={styles.text}>ඉන්වොයිසය නිකුත් කරන සාප්පුව තෝරන්න</Text>
-      </View>
-      <View
-        style={[
-          styles.footer,
-          {
-            backgroundColor: AppColors.background,
-          },
-        ]}
-      >
-        <View>
-          <FlatList
-            data={shops}
-            keyExtractor={(shop) => shop.id.toString()}
-            renderItem={({ item }) => (
-              <TouchableNativeFeedback
-                onPress={(values) =>
-                  props.navigation.navigate("AddInvoiceScreen", {
-                    shop: {
-                      id: item.id,
-                      name: item.name,
-                      category: item.category,
-                    },
-                  })
-                }
-              >
-                <View style={styles.card}>
-                  <Avatar.Icon size={40} icon="store" />
-                  <Title style={styles.title}>{item.name}</Title>
-                  <Caption style={{ textTransform: "uppercase" }}>
-                    මිල කාණ්ඩය: {item.category}
-                  </Caption>
-                </View>
-              </TouchableNativeFeedback>
-            )}
-          />
+    <Provider>
+      <View style={styles.container}>
+        <StatusBar
+          backgroundColor={AppColors.primary}
+          barStyle="light-content"
+        />
+        <View style={styles.header}>
+          <Text style={styles.text}>ඉන්වොයිසය නිකුත් කරන සාප්පුව තෝරන්න</Text>
+        </View>
+        <View
+          style={[
+            styles.footer,
+            {
+              backgroundColor: AppColors.background,
+            },
+          ]}
+        >
+          <View>
+            <FlatList
+              data={shops}
+              keyExtractor={(shop) => shop.id.toString()}
+              renderItem={({ item }) => (
+                <TouchableNativeFeedback
+                  onPress={(values) => {
+                    createInvoice(),
+                      props.navigation.navigate("AddInvoiceScreen", {
+                        invoice: {
+                          name: item.name,
+                          category: item.category,
+                          docID: invoiceId,
+                        },
+                      });
+                  }}
+                >
+                  <View style={styles.card}>
+                    <Avatar.Icon size={40} icon="store" />
+                    <Title style={styles.title}>{item.name}</Title>
+                    <Caption style={{ textTransform: "uppercase" }}>
+                      මිල කාණ්ඩය: {item.category}
+                    </Caption>
+                  </View>
+                </TouchableNativeFeedback>
+              )}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </Provider>
   );
 }
 

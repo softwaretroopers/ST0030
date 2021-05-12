@@ -27,6 +27,7 @@ import AppAddStock from "./src/screens/AppAddStock";
 
 import AppEditShop from "./src/screens/AppEditShop";
 import AppEditStock from "./src/screens/AppEditStock";
+import AppInvoice from "./src/screens/AppInvoice";
 
 const MainStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -133,6 +134,14 @@ const HomeScreens = (props) => (
             onPress={() => props.navigation.openDrawer()}
           />
         ),
+      }}
+    />
+    <HomeStack.Screen
+      name="AppInvoice"
+      component={AppInvoice}
+      options={{
+        title: "Invoice Details",
+        headerShown: false,
       }}
     />
     <HomeStack.Screen
