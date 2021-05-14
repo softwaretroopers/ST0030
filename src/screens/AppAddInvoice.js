@@ -1,5 +1,6 @@
-import React from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, StyleSheet,Text } from "react-native";
+
 import {
   Button,
   DataTable,
@@ -25,26 +26,7 @@ function AppAddInvoice({ navigation, route }) {
   const { invoice } = route.params;
 
   const [StockItems, setStockItems] = React.useState([]);
-
   const stockRef = firebase.firestore().collection("stockItems");
-
-  React.useEffect(() => {
-    stockRef.onSnapshot(
-      (querySnapshot) => {
-        const newStock = [];
-        querySnapshot.forEach((doc) => {
-          const shop = doc.data();
-          shop.id = doc.id;
-          newStock.push(shop);
-        });
-        setStockItems(newStock);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, []);
-
   const updateStock = () => {
     const data = {
       stock: itemStock - quantity,
@@ -58,7 +40,7 @@ function AppAddInvoice({ navigation, route }) {
       .doc(itemID)
       .set(data)
       .then((_doc) => {
-        navigation.goBack();
+      //  navigation.goBack();
       })
       .catch((error) => {
         alert(error);
@@ -104,6 +86,54 @@ function AppAddInvoice({ navigation, route }) {
     }
   };
 
+  //search
+    const stockInvoiceRef = firebase.firestore().collection("stockItems");
+    const [search, setSearch] = useState('');
+    const [filteredDataSource, setFilteredDataSource] = useState([]);
+    const [masterDataSource, setMasterDataSource] = useState([]);
+  
+    React.useEffect(() => {
+      stockInvoiceRef.onSnapshot(
+          (querySnapshot) => {
+            const newStock = [];
+            querySnapshot.forEach((doc) => {
+              const shop = doc.data();
+              shop.id = doc.id;
+              newStock.push(shop);
+            });
+            setFilteredDataSource(newStock),
+            setMasterDataSource(newStock);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }, []);
+
+    const searchFilterFunction = (text) => {
+      // Check if searched text is not blank
+      if (text) {
+        // Inserted text is not blank
+        // Filter the masterDataSource
+        // Update FilteredDataSource
+        const newData = masterDataSource.filter(function (item) {
+          const itemData = item.itemName
+            ? item.itemName.toUpperCase()
+            : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        });
+        setFilteredDataSource(newData);
+        setSearch(text);
+      } else {
+        // Inserted text is blank
+        // Update FilteredDataSource with masterDataSource
+        setFilteredDataSource(masterDataSource);
+        setSearch(text);
+      }
+    };
+  
+  
   return (
     <View>
       <Appbar>
@@ -171,26 +201,29 @@ function AppAddInvoice({ navigation, route }) {
       </View>
       <Divider />
       <Searchbar
+        onChangeText={(text) => searchFilterFunction(text)}
+        onClear={(text) => searchFilterFunction('')}
         placeholder="භාණ්ඩ සොයන්න"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
+        value={search}
       />
+
       <DataTable>
-        <FlatList
-          style={{ marginBottom: "53%" }}
-          data={StockItems}
+      <FlatList
+          data={filteredDataSource}
+        //  keyExtractor={(item, index) => index.toString()}
           keyExtractor={(invoiceItem) => invoiceItem.id.toString()}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <>
               {AppRenderIf(
                 0 < item.stock,
                 <>
+               
                   <DataTable.Row>
                     <DataTable.Cell style={{ justifyContent: "center" }}>
                       {item.itemName}
                     </DataTable.Cell>
                   </DataTable.Row>
-
+          
                   <DataTable.Row>
                     {/* <DataTable.Cell style={{justifyContent:"center"}}>{item.itemName}</DataTable.Cell> */}
                     {AppRenderIf(
@@ -203,12 +236,14 @@ function AppAddInvoice({ navigation, route }) {
                     {AppRenderIf(
                       invoice.category == "b",
                       <DataTable.Cell style={{ justifyContent: "center" }}>
+                         ඒකක මිල: Rs.
                         {item.unitPriceB}
                       </DataTable.Cell>
                     )}
                     {AppRenderIf(
                       invoice.category == "c",
                       <DataTable.Cell style={{ justifyContent: "center" }}>
+                         ඒකක මිල: Rs.
                         {item.unitPriceC}
                       </DataTable.Cell>
                     )}
@@ -304,7 +339,8 @@ function AppAddInvoice({ navigation, route }) {
                 </>
               )}
             </>
-          )}
+          )
+                      }
         />
       </DataTable>
     </View>
