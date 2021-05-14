@@ -159,7 +159,7 @@ function AppEditStock({ navigation, route }) {
             autoCapitalize="none"
             mode="outlined"
             onChangeText={(text) => setStock(text)}
-            value={stock}
+            value={stock.toString()}
             keyboardType="number-pad"
             disabled={visibility}
             left={<TextInput.Icon name="numeric-9-plus-box-multiple-outline" />}
