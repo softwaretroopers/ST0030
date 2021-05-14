@@ -1,6 +1,10 @@
-# Po(S)T Admin
+# Po(S)T - Admin
 
-A Mobile Application, developed using React Native, by Software Troopers.
+A Mobile Application, developed using React Native & FireBase.
 
-Authors - _@kushenthimira_ (Cipher), _@Nehanga-Tharushka_ (Nehanga)
-Organization - @softwaretroopers (_softwaretroopers.com_)
+**Authors -** @kushenthimira [Cipher](https://github.com/kushenthimira)
+@nehangatharushka [Nehanga](https://github.com/nehangatharushka)
+
+**Organization -** @softwaretroopers [Software Troopers](https://github.com/softwaretroopers)
+
+<img src="/assets/adaptive-icon.png" alt="Project Logo" width="200"/>
