@@ -208,6 +208,11 @@ function AppAddInvoice({ navigation, route }) {
       />
 
       <DataTable>
+      <DataTable.Header>
+      <DataTable.Title style={{ justifyContent: "center" }}>ඒකක මිල: Rs.</DataTable.Title>
+      <DataTable.Title style={{ justifyContent: "center" }}>ප්‍රමාණය</DataTable.Title>
+      <DataTable.Title style={{ justifyContent: "center" }}>ක්‍රියාව</DataTable.Title>
+    </DataTable.Header>
       <FlatList
           data={filteredDataSource}
         //  keyExtractor={(item, index) => index.toString()}
@@ -217,7 +222,7 @@ function AppAddInvoice({ navigation, route }) {
               {AppRenderIf(
                 0 < item.stock,
                 <>
-               
+                
                   <DataTable.Row>
                     <DataTable.Cell style={{ justifyContent: "center" }}>
                       {item.itemName}
@@ -229,21 +234,21 @@ function AppAddInvoice({ navigation, route }) {
                     {AppRenderIf(
                       invoice.category == "a",
                       <DataTable.Cell style={{ justifyContent: "center" }}>
-                        ඒකක මිල: Rs.
+                        
                         {item.unitPriceA}
                       </DataTable.Cell>
                     )}
                     {AppRenderIf(
                       invoice.category == "b",
                       <DataTable.Cell style={{ justifyContent: "center" }}>
-                         ඒකක මිල: Rs.
+                       
                         {item.unitPriceB}
                       </DataTable.Cell>
                     )}
                     {AppRenderIf(
                       invoice.category == "c",
                       <DataTable.Cell style={{ justifyContent: "center" }}>
-                         ඒකක මිල: Rs.
+                        
                         {item.unitPriceC}
                       </DataTable.Cell>
                     )}
@@ -253,7 +258,7 @@ function AppAddInvoice({ navigation, route }) {
                       {AppRenderIf(
                         invoice.category == "a",
                         <TextInput
-                          placeholder={"ප්‍රමාණය: " + item.stock}
+                          placeholder={"" + item.stock}
                           mode="outlined"
                           onChangeText={(text) => {
                             setQuantity(text),
