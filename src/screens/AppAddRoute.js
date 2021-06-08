@@ -17,7 +17,7 @@ import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 
-function AppAddShop(props) {
+function AppAddRoute(props) {
   const [visibleSnack, setVisibleSnack] = React.useState(false);
 
   const onToggleSnackBar = () => setVisibleSnack(!visibleSnack);
@@ -30,27 +30,23 @@ function AppAddShop(props) {
 
   const hideDialog = () => setVisible(false);
 
-  const [route, setroute] = useState("");
-
   const [value, setValue] = useState("");
 
   const [entityText, setEntityText] = useState("");
 
-  const entityRef = firebase.firestore().collection("shops");
+  const entityRef = firebase.firestore().collection("route");
 
   const onAddButtonPress = () => {
     if (entityText && entityText.length > 0) {
       //const key = Date.now();
       const data = {
         name: entityText,
-        category: value,
-        route: route,
       };
       entityRef
         .add(data)
         .then((_doc) => {
           setEntityText("");
-          props.navigation.goBack();
+         // props.navigation.goBack();
         })
         .catch((error) => {
           alert(error);
@@ -58,26 +54,6 @@ function AppAddShop(props) {
     }
   };
 
-  const [shops, setShops] = useState([]);
-
-  const shopRef = firebase.firestore().collection("route");
-
-  useEffect(() => {
-    shopRef.onSnapshot(
-      (querySnapshot) => {
-        const newShops = [];
-        querySnapshot.forEach((doc) => {
-          const shop = doc.data();
-          shop.id = doc.id;
-          newShops.push(shop);
-        });
-        setShops(newShops);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, []);
   return (
     <Provider>
       <View style={styles.container}>
@@ -86,7 +62,7 @@ function AppAddShop(props) {
           barStyle="light-content"
         />
         <View style={styles.header}>
-          <Text style={styles.text}>නව වෙළෙඳසැල් තොරතුරු ඇතුලත් කරන්න</Text>
+          <Text style={styles.text}>නව ප්‍රදේශ තොරතුරු ඇතුලත් කරන්න</Text>
         </View>
         <View
           style={[
@@ -97,36 +73,9 @@ function AppAddShop(props) {
           ]}
         >
           <View style={styles.innerFooter}>
-            <View>
-            <Title>ප්‍රදේශය තෝරන්න</Title>
-            <FlatList
-             data={shops}
-             keyExtractor={(shop) => shop.id}
-             horizontal
-             renderItem={({ item }) => (
-            <TouchableNativeFeedback
-              onPress={(values) => setroute(item.name) }
-            >
-              <View >
-              <Avatar.Text size={40} label={item.name} />
-              </View>
-            </TouchableNativeFeedback>
-          )}
-        />
-            </View>
 
             <TextInput
-              placeholder={"තෝරාගත් ප්‍රදේශය"}
-              //onChangeText={(text) => setEntityText(text)}
-              value={"තෝරාගත් ප්‍රදේශය :"+route}
-              underlineColorAndroid="transparent"
-              disabled
-              mode="outlined"
-              left={<TextInput.Icon name="road-variant" />}
-            />
-
-            <TextInput
-              placeholder="වෙළෙඳසැල් නම"
+              placeholder="ප්‍රදේශ නම"
               onChangeText={(text) => setEntityText(text)}
               value={entityText}
               underlineColorAndroid="transparent"
@@ -134,24 +83,6 @@ function AppAddShop(props) {
               mode="outlined"
               left={<TextInput.Icon name="store" />}
             />
-
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              <Caption style={{ fontSize: 16 }}>මිල කාණ්ඩය </Caption>
-              <ToggleButton.Row
-                onValueChange={(value) => setValue(value)}
-                value={value}
-              >
-                <ToggleButton icon="alpha-a" value="a"><Title>asd</Title></ToggleButton>
-                <ToggleButton icon="alpha-b" value="b"></ToggleButton>
-                <ToggleButton icon="alpha-c" value="c"></ToggleButton>
-              </ToggleButton.Row>
-            </View>
             <Button
               mode="contained"
               icon="check-circle"
@@ -197,7 +128,7 @@ function AppAddShop(props) {
                 label: "හරි",
                 onPress: () => {
                   onDismissSnackBar();
-                  props.navigation.goBack();
+                 // props.navigation.goBack();
                 },
               }}
             >
@@ -210,7 +141,7 @@ function AppAddShop(props) {
   );
 }
 
-export default AppAddShop;
+export default AppAddRoute;
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.15;

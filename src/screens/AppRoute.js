@@ -6,21 +6,18 @@ import {
   StyleSheet,
   TouchableNativeFeedback,
 } from "react-native";
-import { Avatar, Title, Caption, FAB, Provider ,Appbar} from "react-native-paper";
+import { Avatar, Title, Caption, FAB, Provider } from "react-native-paper";
 import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 
-function AppShop({ navigation, route }) {
-  const { area } = route.params;
-
+function AppRoute(props) {
   const [shops, setShops] = useState([]);
 
-  const shopRef = firebase.firestore().collection("shops");
+  const shopRef = firebase.firestore().collection("route");
 
   useEffect(() => {
-    shopRef.where("route","==",area.name)
-    .onSnapshot(
+    shopRef.onSnapshot(
       (querySnapshot) => {
         const newShops = [];
         querySnapshot.forEach((doc) => {
@@ -36,15 +33,13 @@ function AppShop({ navigation, route }) {
     );
   }, []);
 
+  //fab open
+  const [state, setState] = React.useState({ open: false });
+  const onStateChange = ({ open }) => setState({ open });
+  const { open } = state;
+
   return (
     <Provider>
-        <Appbar style={{ backgroundColor: AppColors.primary }}>
-          <Appbar.BackAction onPress={() => navigation.goBack()} />
-          <Appbar.Content
-            title="වෙළෙඳසැල්"
-            subtitle={"ප්‍රදේශය :"+area.name}
-          />
-        </Appbar>
       <View style={styles.screen}>
         <StatusBar
           backgroundColor={AppColors.primary}
@@ -56,36 +51,53 @@ function AppShop({ navigation, route }) {
           renderItem={({ item }) => (
             <TouchableNativeFeedback
               onPress={(values) =>
-                navigation.navigate("EditShopScreen", {
-                  shop: {
-                    id: item.id,
+                props.navigation.navigate("ShopScreen", {
+                  area: {
+                    //id: item.id,
                     name: item.name,
-                    category: item.category,
-                    route:item.route,
                   },
                 })
               }
             >
               <View style={styles.card}>
-                <Avatar.Icon size={40} icon="store" />
+                <Avatar.Icon size={40} icon="road-variant" />
                 <Title style={styles.title}>{item.name}</Title>
-                <Caption>
-                  මිල කාණ්ඩය:
-                  <Caption style={{ textTransform: "uppercase" }}>
-                    {item.category}
-                  </Caption>
-                </Caption>
               </View>
             </TouchableNativeFeedback>
           )}
         />
-
+        <FAB.Group
+          open={open}
+          icon={'plus'}
+          actions={[
+            {
+              icon: 'road-variant',
+              label: 'නව ප්‍රදේශ',
+              color:AppColors.primary,
+              onPress: () => props.navigation.navigate("AddRouteScreen"),
+              small: false,
+            },
+            {
+              icon: 'store',
+              label: 'නව වෙළෙඳසැල්',
+              color:AppColors.primary,
+              onPress: () => props.navigation.navigate("AddShopScreen"),
+              small: false,
+            },
+          ]}
+          onStateChange={onStateChange}
+          onPress={() => {
+            if (open) {
+              // do something if the speed dial is open
+            }
+          }}
+        />
       </View>
     </Provider>
   );
 }
 
-export default AppShop;
+export default AppRoute;
 
 const styles = StyleSheet.create({
   card: {

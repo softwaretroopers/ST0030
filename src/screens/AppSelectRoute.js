@@ -23,8 +23,7 @@ import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 
-function AppSelectShop({ navigation, route }) {
-  const { area } = route.params;
+function AppSelectRoute(props) {
   const [visible, setVisible] = React.useState(false);
 
   const showDialog = () => setVisible(true);
@@ -33,7 +32,7 @@ function AppSelectShop({ navigation, route }) {
   const [shops, setShops] = useState([]);
   const invoiceId = Date.now().toString();
 
-  const shopRef = firebase.firestore().collection("shops");
+  const shopRef = firebase.firestore().collection("route");
 
   useEffect(() => {
     shopRef.onSnapshot(
@@ -71,14 +70,13 @@ function AppSelectShop({ navigation, route }) {
   };
 
     //search
-    const shopeRef = firebase.firestore().collection("shops");
+    const shopeRef = firebase.firestore().collection("route");
     const [search, setSearch] = useState('');
     const [filteredDataSource, setFilteredDataSource] = useState([]);
     const [masterDataSource, setMasterDataSource] = useState([]);
   
     React.useEffect(() => {
-      shopeRef.where("route","==",area.name)
-      .onSnapshot(
+      shopeRef.onSnapshot(
           (querySnapshot) => {
             const newStock = [];
             querySnapshot.forEach((doc) => {
@@ -126,13 +124,13 @@ function AppSelectShop({ navigation, route }) {
           barStyle="light-content"
         />
         <View style={styles.header}>
-          <Text style={styles.text}>ඉන්වොයිසය නිකුත් කරන සාප්පුව තෝරන්න</Text>
+          <Text style={styles.text}>ඉන්වොයිසය නිකුත් කරන ප්‍රදේශය තෝරන්න</Text>
         </View>
         <Searchbar
         style={{marginTop:"1%",marginBottom:"5%",borderRadius: 10,marginLeft:"6%",marginRight:"6%"}}
         onChangeText={(text) => searchFilterFunction(text)}
         onClear={(text) => searchFilterFunction('')}
-        placeholder="වෙළෙඳසැලක් සොයන්න"
+        placeholder="ප්‍රදේශය සොයන්න"
         value={search}
       />
          <View
@@ -152,21 +150,18 @@ function AppSelectShop({ navigation, route }) {
                 <TouchableNativeFeedback
                   onPress={(values) => {
                     createInvoice(),
-                      navigation.navigate("AddInvoiceScreen", {
-                        invoice: {
+                      props.navigation.navigate("SelectShopScreen", {
+                        area: {
                           name: item.name,
-                          category: item.category,
-                          docID: invoiceId,
+                         // category: item.category,
+                        //  docID: invoiceId,
                         },
                       });
                   }}
                 >
                   <View style={styles.card}>
-                    <Avatar.Icon size={40} icon="store" />
+                    <Avatar.Icon size={40} icon="road-variant" />
                     <Title style={styles.title}>{item.name}</Title>
-                    <Caption style={{ textTransform: "uppercase" }}>
-                      මිල කාණ්ඩය: {item.category}
-                    </Caption>
                   </View>
                 </TouchableNativeFeedback>
               
@@ -181,7 +176,7 @@ function AppSelectShop({ navigation, route }) {
   );
 }
 
-export default AppSelectShop;
+export default AppSelectRoute;
 
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.15;

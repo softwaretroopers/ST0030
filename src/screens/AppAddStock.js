@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
   ScrollView,
   Dimensions,
   StatusBar,
+  FlatList,
+  TouchableNativeFeedback
+  ,Text
 } from "react-native";
 import {
   Button,
@@ -14,11 +17,17 @@ import {
   Paragraph,
   Provider,
   Snackbar,
+  Title,
+  List ,
 } from "react-native-paper";
 import { firebase } from "../configs/Database";
 import AppColors from "../configs/AppColors";
 
-function AppAddStock(props) {
+function AppAddStock({navigation,route}) {
+
+   const { stockcategory } = route.params;
+   //const [category, setCategory] = React.useState("");
+
   const [visibleSnack, setVisibleSnack] = React.useState(false);
 
   const onToggleSnackBar = () => setVisibleSnack(!visibleSnack);
@@ -41,6 +50,7 @@ function AppAddStock(props) {
   const stockRef = firebase.firestore().collection("stockItems");
 
   const onAddButtonPress = () => {
+
     if (itemName && itemName.length > 0) {
       const data = {
         itemName: itemName,
@@ -49,18 +59,40 @@ function AppAddStock(props) {
         unitPriceB: unitPriceB,
         unitPriceC: unitPriceC,
         stock: stock,
+        category: stockcategory.name,
       };
       stockRef
         .add(data)
         .then((_doc) => {
           setItemName("");
-          props.navigation.goBack();
+          navigation.goBack();
         })
         .catch((error) => {
           alert(error);
         });
     }
   };
+
+  const [shops, setShops] = useState([]);
+
+  const shopRef = firebase.firestore().collection("category");
+
+  useEffect(() => {
+    shopRef.onSnapshot(
+      (querySnapshot) => {
+        const newShops = [];
+        querySnapshot.forEach((doc) => {
+          const shop = doc.data();
+          shop.id = doc.id;
+          newShops.push(shop);
+        });
+        setShops(newShops);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
 
   return (
     <Provider>
@@ -69,8 +101,19 @@ function AppAddStock(props) {
           backgroundColor={AppColors.primary}
           barStyle="light-content"
         />
+        <ScrollView style={{ marginTop: "1%" }}>
 
-        <ScrollView style={{ marginTop: "3%" }}>
+          <TouchableNativeFeedback
+          onPress={() => navigation.navigate("StockCategoryScreen") }
+          >
+        <View style={styles.card}>
+        <View style={{marginTop:"-5%",marginLeft:"-7%"}}>
+        <List.Icon icon="sitemap" />
+        </View>
+         <Title style={styles.title}>{stockcategory.name}</Title>
+        </View>
+          </TouchableNativeFeedback>
+
           <TextInput
             placeholder="භාණ්ඩයේ නම"
             underlineColorAndroid="transparent"
@@ -80,6 +123,7 @@ function AppAddStock(props) {
             value={itemName}
             left={<TextInput.Icon name="package-variant" />}
           />
+      
           <TextInput
             placeholder="තොග මිල"
             underlineColorAndroid="transparent"
@@ -130,8 +174,10 @@ function AppAddStock(props) {
             keyboardType="number-pad"
             left={<TextInput.Icon name="numeric-9-plus-box-multiple-outline" />}
           />
-        </ScrollView>
+          <View style={{marginBottom:"5%"}}>
 
+          </View>
+      </ScrollView>
         <Button
           mode="contained"
           icon="check-circle"
@@ -177,12 +223,13 @@ function AppAddStock(props) {
             label: "හරි",
             onPress: () => {
               onDismissSnackBar();
-              props.navigation.goBack();
+              navigation.goBack();
             },
           }}
         >
           දත්ත එකතු කිරීම සාර්ථකයි
         </Snackbar>
+   
       </View>
     </Provider>
   );
@@ -198,11 +245,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: "5%",
   },
-  header: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   innerFooter: { padding: "4%", marginTop: "5%" },
   logo: {
     width: height_logo,
@@ -210,7 +252,7 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: "4%",
-    marginVertical: "3%",
+    marginVertical: "2%",
   },
   text: {
     color: AppColors.primary,
@@ -218,6 +260,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
   },
+  card: {
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    paddingVertical: "3%",
+    paddingHorizontal: "5%",
+    elevation: 10,
+    backgroundColor: AppColors.background,
+    borderRadius: 6,
+    width: "100%",
+    alignSelf: "center",
+    borderColor:"#000000",
+    borderWidth:1,
+    height:"12%"
+  },
+  title: { 
+      fontSize: 18,
+      marginLeft:"7%",
+      marginTop:"-17%"
+},
 });
 
 export default AppAddStock;

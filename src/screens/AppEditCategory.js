@@ -16,7 +16,7 @@ import { firebase } from "../configs/Database";
 
 import AppRenderIf from "../configs/AppRenderIf";
 
-function AppEditShop({ navigation, route }) {
+function AppEditCategory({ navigation, route }) {
   const [visible, setVisible] = React.useState(false);
 
   const showConfirmation = () => setVisible(true);
@@ -25,16 +25,16 @@ function AppEditShop({ navigation, route }) {
 
   const { shop } = route.params;
   const [entityText, setEntityText] = useState(shop.name);
-  const [value, setValue] = useState(shop.category);
+ // const [value, setValue] = useState(shop.category);
 
-  const entityRef = firebase.firestore().collection("shops").doc(shop.id);
+  const entityRef = firebase.firestore().collection("category").doc(shop.id);
 
   const onEditButtonPress = () => {
-    if (entityText && entityText.length > 0 && value && value.length > 0) {
+    if (entityText && entityText.length > 0) {
       const data = {
         name: entityText,
-        category: value,
-        route:shop.route
+      //  category: value,
+        //route:shop.route
       };
       entityRef
         .set(data)
@@ -51,7 +51,7 @@ function AppEditShop({ navigation, route }) {
   const onDeleteButtonPress = () => {
     firebase
       .firestore()
-      .collection("shops")
+      .collection("category")
       .doc(shop.id)
       .delete()
       .then(
@@ -73,14 +73,14 @@ function AppEditShop({ navigation, route }) {
         <Appbar style={{ backgroundColor: AppColors.primary }}>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content
-            title="සාප්පු දත්ත වෙනස් කිරීම"
+            title="කාණ්ඩ දත්ත වෙනස් කිරීම"
             subtitle={shop.name}
           />
         </Appbar>
         <View style={styles.containers}>
           <TextInput
             disabled={visibility}
-            label="සාප්පු නම"
+            label="කාණ්ඩ නම"
             onChangeText={(text) => setEntityText(text)}
             value={entityText}
             underlineColorAndroid="transparent"
@@ -88,36 +88,6 @@ function AppEditShop({ navigation, route }) {
             mode="outlined"
             left={<TextInput.Icon name="store" />}
           />
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              marginTop: "2%",
-            }}
-          >
-            <Caption style={{ fontSize: 16 }}>මිල කාණ්ඩය </Caption>
-            <ToggleButton.Row
-              onValueChange={(value) => setValue(value)}
-              value={value}
-            >
-              <ToggleButton
-                disabled={visibility}
-                icon="alpha-a"
-                value="a"
-              ></ToggleButton>
-              <ToggleButton
-                disabled={visibility}
-                icon="alpha-b"
-                value="b"
-              ></ToggleButton>
-              <ToggleButton
-                disabled={visibility}
-                icon="alpha-c"
-                value="c"
-              ></ToggleButton>
-            </ToggleButton.Row>
-          </View>
           {AppRenderIf(
             visibility,
             <View
@@ -248,4 +218,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppEditShop;
+export default AppEditCategory;

@@ -14,12 +14,15 @@ import {
   Searchbar,
   Provider,
   Caption,
+  Appbar,
 } from "react-native-paper";
 import { firebase } from "../configs/Database";
 import AppColors from "../configs/AppColors";
 import AppRenderIf from "../configs/AppRenderIf";
 
-function AppStock(props) {
+function AppStock({navigation,route}) {
+  const { category } = route.params;
+
   const [StockItems, setStockItems] = useState([]);
 
   const stockRef = firebase.firestore().collection("stockItems");
@@ -48,7 +51,8 @@ function AppStock(props) {
     const [masterDataSource, setMasterDataSource] = useState([]);
   
     React.useEffect(() => {
-      stockInvoiceRef.onSnapshot(
+      stockInvoiceRef.where("category","==",category.name)
+      .onSnapshot(
           (querySnapshot) => {
             const newStock = [];
             querySnapshot.forEach((doc) => {
@@ -96,6 +100,13 @@ function AppStock(props) {
           backgroundColor={AppColors.primary}
           barStyle="light-content"
         />
+        <Appbar style={{ backgroundColor: AppColors.primary }}>
+          <Appbar.BackAction onPress={() => navigation.goBack()} />
+          <Appbar.Content
+            title="නව භාණ්ඩ"
+            subtitle={"තෝරාගත් කාණ්ඩය :"+category.name}
+          />
+        </Appbar>
   <Searchbar
     style={{marginTop:"2%",marginBottom:"2%",borderRadius: 10,marginLeft:"2%",marginRight:"2%"}}
     onChangeText={(text) => searchFilterFunction(text)}
@@ -109,7 +120,7 @@ function AppStock(props) {
           renderItem={({ item }) => (
             <TouchableNativeFeedback
               onPress={(values) =>
-                props.navigation.navigate("EditStockScreen", {
+                navigation.navigate("EditStockScreen", {
                   stockItem: {
                     id: item.id,
                     itemName: item.itemName,
@@ -118,6 +129,7 @@ function AppStock(props) {
                     unitPriceA: item.unitPriceA,
                     unitPriceB: item.unitPriceB,
                     unitPriceC: item.unitPriceC,
+                    category: item.category,
                   },
                 })
               }
@@ -325,11 +337,6 @@ function AppStock(props) {
               </View>
             </TouchableNativeFeedback>
           )}
-        />
-        <FAB
-          style={styles.fab}
-          icon="plus"
-          onPress={() => props.navigation.navigate("AddStockScreen")}
         />
       </View>
     </Provider>

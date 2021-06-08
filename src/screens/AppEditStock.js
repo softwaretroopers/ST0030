@@ -16,6 +16,7 @@ import AppRenderIf from "../configs/AppRenderIf";
 
 function AppEditStock({ navigation, route }) {
   const { stockItem } = route.params;
+  const [category, setcategory] = React.useState(stockItem.category);
   const [itemName, setItemName] = React.useState(stockItem.itemName);
   const [stockPrice, setStockPrice] = React.useState(stockItem.stockPrice);
   const [unitPriceA, setUnitPriceA] = React.useState(stockItem.unitPriceA);
@@ -47,7 +48,9 @@ function AppEditStock({ navigation, route }) {
       unitPriceC &&
       unitPriceC.length > 0 &&
       stock &&
-      stock.length > 0
+      stock.length > 0 &&
+      category &&
+      category.length > 0
     ) {
       const data = {
         itemName: itemName,
@@ -56,6 +59,7 @@ function AppEditStock({ navigation, route }) {
         unitPriceA: unitPriceA,
         unitPriceB: unitPriceB,
         unitPriceC: unitPriceC,
+        category:category,
       };
       entityRef
         .set(data)
@@ -99,6 +103,16 @@ function AppEditStock({ navigation, route }) {
           />
         </Appbar>
         <View style={styles.containers}>
+        <TextInput
+            label="කාණ්ඩයේ නම"
+            underlineColorAndroid="transparent"
+            autoCapitalize="none"
+            mode="outlined"
+            onChangeText={(text) => setcategory(text)}
+            value={category}
+            disabled={visibility}
+            left={<TextInput.Icon name="sitemap" />}
+          />
           <TextInput
             label="භාණ්ඩයේ නම"
             underlineColorAndroid="transparent"

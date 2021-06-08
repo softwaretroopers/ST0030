@@ -11,15 +11,14 @@ import { firebase } from "../configs/Database";
 
 import AppColors from "../configs/AppColors";
 
-function AppShop({ navigation, route }) {
-  const { area } = route.params;
+function AppCategory(props) {
 
   const [shops, setShops] = useState([]);
 
-  const shopRef = firebase.firestore().collection("shops");
+  const shopRef = firebase.firestore().collection("category");
 
   useEffect(() => {
-    shopRef.where("route","==",area.name)
+    shopRef
     .onSnapshot(
       (querySnapshot) => {
         const newShops = [];
@@ -38,13 +37,6 @@ function AppShop({ navigation, route }) {
 
   return (
     <Provider>
-        <Appbar style={{ backgroundColor: AppColors.primary }}>
-          <Appbar.BackAction onPress={() => navigation.goBack()} />
-          <Appbar.Content
-            title="වෙළෙඳසැල්"
-            subtitle={"ප්‍රදේශය :"+area.name}
-          />
-        </Appbar>
       <View style={styles.screen}>
         <StatusBar
           backgroundColor={AppColors.primary}
@@ -56,41 +48,39 @@ function AppShop({ navigation, route }) {
           renderItem={({ item }) => (
             <TouchableNativeFeedback
               onPress={(values) =>
-                navigation.navigate("EditShopScreen", {
+                props.navigation.navigate("EditCategoryScreen", {
                   shop: {
                     id: item.id,
                     name: item.name,
-                    category: item.category,
-                    route:item.route,
+                  //  category: item.category,
+                   // route:item.route,
                   },
                 })
               }
             >
               <View style={styles.card}>
-                <Avatar.Icon size={40} icon="store" />
+              <Avatar.Icon size={30} icon="marker" />
                 <Title style={styles.title}>{item.name}</Title>
-                <Caption>
-                  මිල කාණ්ඩය:
-                  <Caption style={{ textTransform: "uppercase" }}>
-                    {item.category}
-                  </Caption>
-                </Caption>
               </View>
             </TouchableNativeFeedback>
           )}
         />
-
+        <FAB
+          style={styles.fab}
+          icon="plus"
+          onPress={() => props.navigation.navigate("AddCategoryScreen")}
+        />
       </View>
     </Provider>
   );
 }
 
-export default AppShop;
+export default AppCategory;
 
 const styles = StyleSheet.create({
   card: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     paddingVertical: "3%",
     paddingHorizontal: "5%",
     elevation: 10,
@@ -100,7 +90,11 @@ const styles = StyleSheet.create({
     width: "60%",
     alignSelf: "center",
   },
-  title: { fontSize: 16 },
+  title: { 
+      fontSize: 18,
+      marginLeft:"25%",
+      marginTop:"-15%"
+},
   screen: { flex: 1, justifyContent: "center" },
   fab: {
     position: "absolute",
