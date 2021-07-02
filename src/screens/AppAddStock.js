@@ -28,6 +28,8 @@ function AppAddStock({navigation,route}) {
    const { stockcategory } = route.params;
    //const [category, setCategory] = React.useState("");
 
+   const categoryName=stockcategory.name;
+
   const [visibleSnack, setVisibleSnack] = React.useState(false);
 
   const onToggleSnackBar = () => setVisibleSnack(!visibleSnack);
@@ -51,7 +53,12 @@ function AppAddStock({navigation,route}) {
 
   const onAddButtonPress = () => {
 
-    if (itemName && itemName.length > 0) {
+    if (itemName && itemName.length > 0,
+        stockPrice && stockPrice.length > 0 ,
+        unitPriceA && unitPriceA.length > 0 ,
+        unitPriceB && unitPriceA.length > 0 ,
+        unitPriceC && unitPriceC.length > 0 ,
+        categoryName && categoryName !== "කාණ්ඩය තෝරන්න") {
       const data = {
         itemName: itemName,
         stockPrice: stockPrice,

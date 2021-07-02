@@ -37,6 +37,7 @@ import AppAddCategory from "./src/screens/AppAddCategory";
 import AppEditCategory from "./src/screens/AppEditCategory";
 import AppSelectCategory from "./src/screens/AppSelectCategory";
 import AppSelectStockCategory from "./src/screens/AppSelectStockCategory";
+import AppAddInvoiceCtg from "./src/screens/AppAddInvoiceCtg";
 
 const MainStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -198,6 +199,14 @@ const AddInvoiceScreens = (props) => (
       }}
     />
     <InvoiceStack.Screen
+      name="AddInvoiceCategoryScreens"
+      component={AppAddInvoiceCtg}
+      options={{
+        title: "Add Invoice",
+        headerShown: false,
+      }}
+    />
+    <InvoiceStack.Screen
       name="AddInvoiceScreen"
       component={AppAddInvoice}
       options={{
@@ -241,7 +250,7 @@ const StockScreens = (props) => (
         ),
       }}
     />
-     <StockStack.Screen
+    <StockStack.Screen
       name="StockScreen"
       component={AppStock}
       options={{
@@ -256,7 +265,7 @@ const StockScreens = (props) => (
         title: "නව භාණ්ඩ",
       }}
     />
-     <StockStack.Screen
+    <StockStack.Screen
       name="StockCategoryScreen"
       component={AppSelectStockCategory}
       options={{
@@ -305,15 +314,15 @@ const CategoryScreens = (props) => (
       component={AppAddCategory}
       options={{
         title: "කාණ්ඩ",
-       // headerShown: false,
+        // headerShown: false,
       }}
     />
-     <CategoryStack.Screen
+    <CategoryStack.Screen
       name="EditCategoryScreen"
       component={AppEditCategory}
       options={{
         title: "කාණ්ඩ",
-       headerShown: false,
+        headerShown: false,
       }}
     />
   </CategoryStack.Navigator>
@@ -344,7 +353,7 @@ const ShopScreens = (props) => (
         ),
       }}
     />
-       <ShopStack.Screen
+    <ShopStack.Screen
       name="ShopScreen"
       component={AppShop}
       options={{
@@ -359,7 +368,7 @@ const ShopScreens = (props) => (
         title: "නව වෙළෙඳසැල්",
       }}
     />
-     <ShopStack.Screen
+    <ShopStack.Screen
       name="AddRouteScreen"
       component={AppAddRoute}
       options={{
